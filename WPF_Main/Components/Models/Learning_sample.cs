@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace WPF_Main.Components.Models
 {
+    /*
+        Класс отвечает за формирование обучающей выборки из txt файла.
+
+     */
     class Learning_sample
     {
         private Dictionary<string, LinkedList<double>> _learning_sampleMap;
@@ -35,8 +39,12 @@ namespace WPF_Main.Components.Models
                 for (int j = 0; j < temp.Length; j++)
                 {
                     temp[j] = temp[j].Trim();
-                    Console.Write(temp[j]); 
-                    arr[i - 1, j] = Convert.ToDouble(temp[j]);
+                    if (temp[j] != "")
+                    {
+                        arr[i - 1, j] = Convert.ToDouble(temp[j]);
+                        Console.Write(temp[j]);
+                    }
+
                 }
             }
             Console.WriteLine();
@@ -66,6 +74,7 @@ namespace WPF_Main.Components.Models
         public Learning_sample()
         {
         }
+
 
         public string Learning_sample_str { get => _learning_sample_str; set => _learning_sample_str = value; }
         public Dictionary<string, LinkedList<double>> Learning_sampleMap { get => _learning_sampleMap;}
