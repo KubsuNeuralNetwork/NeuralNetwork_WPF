@@ -43,7 +43,7 @@ namespace WPF_Main.Components.Forms.LearningSet
         }
         private void LS_window_ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            
         }
 
         private void LerningSet_window_Activated(object sender, EventArgs e)

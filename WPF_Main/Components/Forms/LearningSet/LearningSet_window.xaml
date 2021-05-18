@@ -14,6 +14,14 @@
         <Label Content="Входные вектора" HorizontalAlignment="Left" Margin="30,20,0,0" VerticalAlignment="Top" Width="119"/>
         <Label Content="Целевые вектора" HorizontalAlignment="Left" Margin="234,20,0,0" VerticalAlignment="Top" Width="119"/>
         <Button x:Name="LS_window_button_FinalToInput" Content="&lt;-" HorizontalAlignment="Left" Margin="154,196,0,0" VerticalAlignment="Top" Width="75" Click="LS_window_button_FinalToInput_Click"/>
-        <GroupBox Header="Нормализация" HorizontalAlignment="Left" Height="91" Margin="425,46,0,0" VerticalAlignment="Top" Width="324"/>
+        <GroupBox Header="Нормализация" HorizontalAlignment="Left" Height="91" Margin="425,46,0,0" VerticalAlignment="Top" Width="324">
+            <RadioButton Content="(X-MIN)/(MAX-MIN)" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" IsChecked="True"/>
+        </GroupBox>
+        <GroupBox x:Name="LS_window_Normolize_GroupBox" Header="Нормализация" HorizontalAlignment="Left" Height="91" Margin="425,46,0,0" VerticalAlignment="Top" Width="324">
+            <RadioButton x:Name="LS_window_Normolize_RadioButton_MinMaxNormolize" Content="(X-MIN)/(MAX-MIN)" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" IsChecked="True"/>
+        </GroupBox>
+        <GroupBox x:Name="Ls_window_ActivationFuntion_GroupBox" Header="Нормализация" HorizontalAlignment="Left" Height="203" Margin="425,142,0,0" VerticalAlignment="Top" Width="324">
+            <RadioButton Content="(X-MIN)/(MAX-MIN)" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" IsChecked="True"/>
+        </GroupBox>
     </Grid>
 </Window>
