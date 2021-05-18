@@ -20,6 +20,7 @@ public class Manager
 
         }
         //net.Load("./MLP.txt");
+
         Console.WriteLine("cost: " + net.cost);
 
         Console.WriteLine(net.FeedForward(new float[] { 0.5f, 0.5f })[0]);
