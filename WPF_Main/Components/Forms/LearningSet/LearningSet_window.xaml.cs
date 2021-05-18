@@ -37,8 +37,12 @@ namespace WPF_Main.Components.Forms.LearningSet
                 ListBoxItem item = new ListBoxItem();
                 item.Content = name;
                 item.Height = 20;
-                if (learning_Sample.isTargetItem(name))
+                if (learning_Sample.isTargetItem(name) == 1)
                     item.FontWeight = FontWeights.Bold;
+                if (learning_Sample.isTargetItem(name) == -1)
+                {
+                    item.Foreground = Brushes.LightGray;
+                }
                 LS_window_ListBox_input.Items.Add(item);
             }
 
@@ -48,6 +52,25 @@ namespace WPF_Main.Components.Forms.LearningSet
 
         private void LS_window_ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            ListBoxItem item = (ListBoxItem)LS_window_ListBox_input.SelectedItem;
+            int target = learning_Sample.isTargetItem((string)item.Content);
+            Load_Target_RadioButton(target);
+        }
+
+        private void Load_Target_RadioButton(int target)
+        {
+            switch (target)
+            {
+                case 1:
+                    Target_vector_radioButton.IsChecked = true;
+                    break;
+                case 0:
+                    Input_vector_RadioButton.IsChecked = true;
+                    break;
+                case -1:
+                    NotUsed_vector_radioButton.IsChecked = true;
+                    break;
+            }
 
         }
 
@@ -81,9 +104,37 @@ namespace WPF_Main.Components.Forms.LearningSet
             this.Close();
         }
 
-        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        private void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
+        }
 
+        private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !(Char.IsDigit(e.Text, 0));
+        }
+
+        private void Input_vector_RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            ListBoxItem item = (ListBoxItem)LS_window_ListBox_input.SelectedItem;
+            learning_Sample.changeTargetItem((string)item.Content, 0);
+            item.FontWeight = FontWeights.Normal;
+            item.Foreground = Brushes.Black;
+        }
+
+        private void Target_vector_radioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            ListBoxItem item = (ListBoxItem)LS_window_ListBox_input.SelectedItem;
+            learning_Sample.changeTargetItem((string)item.Content, 1);
+            item.FontWeight = FontWeights.Bold;
+            item.Foreground = Brushes.Black;
+        }
+
+        private void NotUsed_vector_radioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            ListBoxItem item = (ListBoxItem)LS_window_ListBox_input.SelectedItem;
+            learning_Sample.changeTargetItem((string)item.Content, -1);
+            item.FontWeight = FontWeights.Normal;
+            item.Foreground = Brushes.LightGray;
         }
     }
 }

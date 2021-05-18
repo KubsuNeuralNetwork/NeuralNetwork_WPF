@@ -69,7 +69,6 @@ namespace WPF_Main
                 File_text.Text = path;
                 InitLearning_sample();
             }
-            Console.WriteLine(learning_Sample.getTargetString());
         }
 
         private void InitLearning_sample()

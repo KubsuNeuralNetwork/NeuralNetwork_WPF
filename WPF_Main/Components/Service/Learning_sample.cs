@@ -13,12 +13,12 @@ namespace WPF_Main.Components.Service
     class Learning_sample
     {
         private Dictionary<string, LinkedList<float>> _learning_sampleMap;
-        private LinkedList<Vectors_names> isTarget; // Является ли вектор целевым
+        private LinkedList<VectorsNames> isTarget; // Является ли вектор целевым
         private string[] _columns_names;
         private string _learning_sample_str;
         public Learning_sample(string learning_sample_str)
         {
-            isTarget = new LinkedList<Vectors_names>();
+            isTarget = new LinkedList<VectorsNames>();
             _learning_sampleMap = new Dictionary<string, LinkedList<float>>();
             _learning_sample_str = learning_sample_str.Replace('.', ',');
             string[] learnin_sample_byRow = _learning_sample_str.Split('\n');
@@ -67,9 +67,9 @@ namespace WPF_Main.Components.Service
                     list.AddLast(arr[j, i]);
                 }
                 _learning_sampleMap.Add(_columns_names[i], list);
-                isTarget.AddLast(new Vectors_names(_columns_names[i]));
+                isTarget.AddLast(new VectorsNames(_columns_names[i]));
             }
-            isTarget.Last.Value.IsTarget = true;
+            isTarget.Last.Value.IsTarget = 1;
             _learning_sample_str = convert_mapToString();
         }
 
@@ -81,7 +81,7 @@ namespace WPF_Main.Components.Service
 
         public string Learning_sample_str { get => _learning_sample_str; set => _learning_sample_str = value; }
         public Dictionary<string, LinkedList<float>> Learning_sampleMap { get => _learning_sampleMap;}
-        internal LinkedList<Vectors_names> IsTarget { get => isTarget; set => isTarget = value; }
+        internal LinkedList<VectorsNames> IsTarget { get => isTarget; set => isTarget = value; }
 
         private string convert_mapToString()
         {
@@ -98,20 +98,12 @@ namespace WPF_Main.Components.Service
             return str;
         }
 
-        public string getTargetString()
+        public string[] getDictionaryKeys()
         {
-            string result = "";
-            foreach(Vectors_names target in isTarget)
-            {
-                result += target.ToString + "\n";
-            }
-            return result;
+            return _learning_sampleMap.Keys.ToArray();
         }
 
-        public bool isTargetItem(string name)
-        {
-            return isTarget.Find(new Vectors_names(name)).Value.IsTarget;
-        }
+
 
         public float[] getArrayByKey(string key)
         {
@@ -121,32 +113,88 @@ namespace WPF_Main.Components.Service
             return arr;
         }
 
-        public string[] getDictionaryKeys()
+
+        #region Работа с Target
+        public string getTargetString()
         {
-            return _learning_sampleMap.Keys.ToArray();
+            string result = "";
+            foreach (VectorsNames target in isTarget)
+            {
+                result += target.ToString + "\n";
+            }
+            return result;
         }
+
+        public int isTargetItem(string name)
+        {
+            return isTarget.Find(new VectorsNames(name)).Value.IsTarget;
+        }
+        public void changeTargetItem(string name, int target)
+        {
+            isTarget.Find(new VectorsNames(name)).Value.IsTarget = target;
+        }
+
+        public int count_of_inputVectors()
+        {
+            int counter = 0;
+            foreach (VectorsNames item in isTarget)
+            {
+                if (item.IsTarget == 0)
+                    counter++;
+            }
+            return counter;
+        }
+        public int count_of_TargetVectors()
+        {
+            int counter = 0;
+            foreach (VectorsNames item in isTarget)
+            {
+                if (item.IsTarget == 1)
+                    counter++;
+            }
+            return counter;
+        }
+        public int count_of_NotUsedVectors()
+        {
+            int counter = 0;
+            foreach (VectorsNames item in isTarget)
+            {
+                if (item.IsTarget == 1)
+                    counter++;
+            }
+            return counter;
+        }
+        #endregion
     }
 
-    class Vectors_names
+    class VectorsNames
     {
         private string name;
-        private bool isTarget;
+        private int isTarget;
 
-        public Vectors_names(string name)
+        public VectorsNames(string name)
         {
             this.name = name;
-            this.isTarget = false;
+            this.isTarget = 0;
         }
 
         public new string ToString => (name + " " + isTarget);
 
-        public bool IsTarget { get => isTarget; set => isTarget = value; }
+        public int IsTarget { get => isTarget; set => isTarget = value; }
         public string Name { get => name; set => name = value; }
 
         public override bool Equals(object obj)
         {
-            return obj is Vectors_names names &&
+            return obj is VectorsNames names &&
                    name == names.name;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = -1525980690;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(name);
+            hashCode = hashCode * -1521134295 + isTarget.GetHashCode();
+            return hashCode;
         }
     }
 }
