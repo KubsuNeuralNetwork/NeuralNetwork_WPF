@@ -108,6 +108,11 @@ namespace WPF_Main.Components.Service
             return result;
         }
 
+        public bool isTargetItem(string name)
+        {
+            return isTarget.Find(new Vectors_names(name)).Value.IsTarget;
+        }
+
         public float[] getArrayByKey(string key)
         {
             LinkedList<float> list;
@@ -137,5 +142,11 @@ namespace WPF_Main.Components.Service
 
         public bool IsTarget { get => isTarget; set => isTarget = value; }
         public string Name { get => name; set => name = value; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Vectors_names names &&
+                   name == names.name;
+        }
     }
 }

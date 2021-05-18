@@ -32,12 +32,13 @@ namespace WPF_Main.Components.Forms.LearningSet
         private void LerningSet_window_Activated(object sender, EventArgs e)
         {
             learning_Sample = liveParams.Learning_Sample;
-            foreach (string str in learning_Sample.getDictionaryKeys())
+            foreach (string name in learning_Sample.getDictionaryKeys())
             {
                 ListBoxItem item = new ListBoxItem();
-                item.Content = str;
+                item.Content = name;
                 item.Height = 20;
-                item.FontWeight = FontWeights.Bold;
+                if (learning_Sample.isTargetItem(name))
+                    item.FontWeight = FontWeights.Bold;
                 LS_window_ListBox_input.Items.Add(item);
             }
 

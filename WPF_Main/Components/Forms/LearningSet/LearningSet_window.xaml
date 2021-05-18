@@ -23,6 +23,31 @@
             <Button x:Name="About_button" Content="О программе" Height="34" VerticalAlignment="Center" Width="112" Margin="64,16,15,18" HorizontalAlignment="Center" DockPanel.Dock="Right" FontFamily="Times New Roman" FontSize="16" Click="About_button_Click"/>
             <Button x:Name="Back_button" Content="Назад" Height="34" VerticalAlignment="Center" Width="112" Margin="37,20.5,0,22.5" HorizontalAlignment="Center" FontFamily="Times New Roman" FontSize="16" Click="Back_button_Click" />
         </DockPanel>
-        <GroupBox Grid.Column="1" Header="Свойства" HorizontalAlignment="Left" Height="315" Margin="10,10,0,0" VerticalAlignment="Top" Width="558"/>
+        <GroupBox Grid.Column="1" Header="Свойства" HorizontalAlignment="Left" Height="315" Margin="10,10,0,0" VerticalAlignment="Top" Width="558" FontFamily="Times New Roman" FontSize="14">
+            <Grid HorizontalAlignment="Left" Height="296" VerticalAlignment="Top" Width="548" Margin="0,0,-2,-4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="53*"/>
+                    <RowDefinition Height="95*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="58*"/>
+                    <ColumnDefinition Width="79*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel x:Name="Normolize_Stack_Panel" HorizontalAlignment="Left" Height="86" Margin="10,10,0,0" VerticalAlignment="Top" Width="212">
+                    <StackPanel.BindingGroup>
+                        <BindingGroup Name="Normolize"/>
+                    </StackPanel.BindingGroup>
+                    <Label Content="Нормализация" BorderThickness="0,0,0,1" BorderBrush="#BF636363" Padding="5,5,5,1"/>
+                    <RadioButton x:Name="MinMax_Nor_radioButton" Content="(X-MIN)/(MAX-MIN)" Margin="0,4,0,0" IsChecked="True" GroupName="Normolize"/>
+                    <RadioButton Content="RadioButton" Margin="0,5,0,0" GroupName="Normolize"/>
+                </StackPanel>
+                <StackPanel x:Name="LayersOfMLP" HorizontalAlignment="Left" Height="86" Margin="10,10,0,0" VerticalAlignment="Top" Width="296" Grid.Column="1">
+                    <StackPanel.BindingGroup>
+                        <BindingGroup Name="Normolize"/>
+                    </StackPanel.BindingGroup>
+                    <Label Content="Слои Нейронной сети" BorderThickness="0,0,0,1" BorderBrush="#BF636363" Padding="5,5,5,1"/>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
     </Grid>
 </Window>
