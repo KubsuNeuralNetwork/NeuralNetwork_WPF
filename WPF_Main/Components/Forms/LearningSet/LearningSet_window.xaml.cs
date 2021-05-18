@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WPF_Main.Components.Models;
 
 namespace WPF_Main.Components.Forms.LearningSet
 {
@@ -19,9 +20,12 @@ namespace WPF_Main.Components.Forms.LearningSet
     /// </summary>
     public partial class LearningSet_window : Window
     {
+        private Learning_sample learning_Sample;
         public LearningSet_window()
         {
             InitializeComponent();
         }
+
+        internal Learning_sample Learning_Sample { get => learning_Sample; set => learning_Sample = value; }
     }
 }
