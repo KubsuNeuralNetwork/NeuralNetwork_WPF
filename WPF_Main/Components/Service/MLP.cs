@@ -370,29 +370,29 @@ public class NeuralNetwork
         writer.Close();
     }
 
-    public float [,] Normalize(Dictionary<string,LinkedList<float>> dict)
-    {
-        string[] str=getDictionaryKeys()
-        float max, min;
-        int i_size = inputs.Length, j_size = inputs[0].Length;
-        float[,] norm = new float[i_size+2,j_size];
-        for (int j=0;j< j_size; j++)
-        {
-            max = inputs[0][j];
-            min = inputs[0][j];
-            for(int i = 0; i < i_size; i++)
-            {
-                if (inputs[i][j] < min) min = inputs[i][j];
-                if (inputs[i][j] > max) max = inputs[i][j];
-            }
-            for(int i = 0; i < i_size; i++)
-            {
-                norm[i,j] = (inputs[i][j] - min) / (max - min);
-            }
-            norm[i_size, j] = min;
-            norm[i_size + 1, j] = max;
-        }
-        return norm;
-    }
+    //public float [,] Normalize(Dictionary<string,LinkedList<float>> dict)
+    //{
+    //    string[] str = getDictionaryKeys();
+    //    float max, min;
+    //    int i_size = inputs.Length, j_size = inputs[0].Length;
+    //    float[,] norm = new float[i_size+2,j_size];
+    //    for (int j=0;j< j_size; j++)
+    //    {
+    //        max = inputs[0][j];
+    //        min = inputs[0][j];
+    //        for(int i = 0; i < i_size; i++)
+    //        {
+    //            if (inputs[i][j] < min) min = inputs[i][j];
+    //            if (inputs[i][j] > max) max = inputs[i][j];
+    //        }
+    //        for(int i = 0; i < i_size; i++)
+    //        {
+    //            norm[i,j] = (inputs[i][j] - min) / (max - min);
+    //        }
+    //        norm[i_size, j] = min;
+    //        norm[i_size + 1, j] = max;
+    //    }
+    //    return norm;
+    //}
     
 }

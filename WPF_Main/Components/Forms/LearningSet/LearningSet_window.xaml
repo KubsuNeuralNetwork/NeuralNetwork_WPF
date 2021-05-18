@@ -7,13 +7,22 @@
         mc:Ignorable="d"
         Title="LearningSet_window" Height="450" Width="800" Activated="LerningSet_window_Activated">
     <Grid>
-        <GroupBox Header="Свойства" HorizontalAlignment="Left" Height="336" Margin="412,20,0,0" VerticalAlignment="Top" Width="351"/>
-        <ListBox x:Name="LS_window_ListBox_input" HorizontalAlignment="Left" Height="310" Margin="30,46,0,0" VerticalAlignment="Top" Width="119" Background="#FFFCF9F9" SelectionChanged="LS_window_ListBox_SelectionChanged"/>
-        <Button x:Name="LS_window_button_InputToFinal" Content="-&gt;" HorizontalAlignment="Left" Margin="154,172,0,0" VerticalAlignment="Top" Width="75" Click="LS_window_button_InputToFinal_Click"/>
-        <ListBox x:Name="LS_window_ListBox_final" HorizontalAlignment="Left" Height="310" Margin="234,46,0,0" VerticalAlignment="Top" Width="119" Background="#FFFCF9F9" SelectionChanged="LS_window_ListBox_SelectionChanged"/>
-        <Label Content="Входные вектора" HorizontalAlignment="Left" Margin="30,20,0,0" VerticalAlignment="Top" Width="119"/>
-        <Label Content="Целевые вектора" HorizontalAlignment="Left" Margin="234,20,0,0" VerticalAlignment="Top" Width="119"/>
-        <Button x:Name="LS_window_button_FinalToInput" Content="&lt;-" HorizontalAlignment="Left" Margin="154,196,0,0" VerticalAlignment="Top" Width="75" Click="LS_window_button_FinalToInput_Click"/>
-        <GroupBox Header="Нормализация" HorizontalAlignment="Left" Height="91" Margin="425,46,0,0" VerticalAlignment="Top" Width="324"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="341*"/>
+            <RowDefinition Height="78*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="17*"/>
+            <ColumnDefinition Width="55*"/>
+        </Grid.ColumnDefinitions>
+        <ListBox x:Name="LS_window_ListBox_input" HorizontalAlignment="Left" Height="289" Margin="30,36,0,0" VerticalAlignment="Top" Width="119" Background="#FFFCF9F9" SelectionChanged="LS_window_ListBox_SelectionChanged"/>
+        <Label Content="Входные вектора" HorizontalAlignment="Left" Margin="30,10,0,0" VerticalAlignment="Top" Width="119" FontStretch="Expanded" FontFamily="Times New Roman" FontSize="14" Height="26"/>
+        <DockPanel Height="77" Margin="0,1,-2,0" VerticalAlignment="Top" AutomationProperties.IsOffscreenBehavior="Offscreen" LastChildFill="False" FlowDirection="RightToLeft" Background="#B2F9F9F9" Grid.Row="1" Grid.ColumnSpan="2">
+            <Button x:Name="Exit_button" Content="Выход" Height="34" VerticalAlignment="Center" Width="112" Margin="28,16,0,18" HorizontalAlignment="Center" FontFamily="Times New Roman" FontSize="16" Click="Exit_button_Click"/>
+            <Button x:Name="Next_button" Content="Далее" Height="34" VerticalAlignment="Center" Width="112" Margin="68,16,0,18" HorizontalAlignment="Center" FontFamily="Times New Roman" FontSize="16" Click="Next_button_Click"/>
+            <Button x:Name="About_button" Content="О программе" Height="34" VerticalAlignment="Center" Width="112" Margin="64,16,15,18" HorizontalAlignment="Center" DockPanel.Dock="Right" FontFamily="Times New Roman" FontSize="16" Click="About_button_Click"/>
+            <Button x:Name="Back_button" Content="Назад" Height="34" VerticalAlignment="Center" Width="112" Margin="37,20.5,0,22.5" HorizontalAlignment="Center" FontFamily="Times New Roman" FontSize="16" Click="Back_button_Click" />
+        </DockPanel>
+        <GroupBox Grid.Column="1" Header="Свойства" HorizontalAlignment="Left" Height="315" Margin="10,10,0,0" VerticalAlignment="Top" Width="558"/>
     </Grid>
 </Window>
