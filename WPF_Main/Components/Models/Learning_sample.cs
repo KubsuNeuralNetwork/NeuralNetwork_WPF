@@ -12,12 +12,12 @@ namespace WPF_Main.Components.Models
      */
     class Learning_sample
     {
-        private Dictionary<string, LinkedList<double>> _learning_sampleMap;
+        private Dictionary<string, LinkedList<float>> _learning_sampleMap;
         private string[] _columns_names;
         private string _learning_sample_str;
         public Learning_sample(string learning_sample_str)
         {
-            _learning_sampleMap = new Dictionary<string, LinkedList<double>>();
+            _learning_sampleMap = new Dictionary<string, LinkedList<float>>();
             _learning_sample_str = learning_sample_str.Replace('.', ',');
             string[] learnin_sample_byRow = _learning_sample_str.Split('\n');
             _columns_names = new string[learnin_sample_byRow[0].Split('\t').Length];
@@ -30,7 +30,7 @@ namespace WPF_Main.Components.Models
             }
             int arr_countOfRow = learnin_sample_byRow.Length - 1;
             int arr_countOfColums = learnin_sample_byRow[0].Split().Length - 1;
-            double[,] arr = new double[arr_countOfRow, arr_countOfColums];
+            float[,] arr = new float[arr_countOfRow, arr_countOfColums];
             for (int i = 1; i < learnin_sample_byRow.Length; i++)
             {
                 string str = learnin_sample_byRow[i];
@@ -41,7 +41,7 @@ namespace WPF_Main.Components.Models
                     temp[j] = temp[j].Trim();
                     if (temp[j] != "")
                     {
-                        arr[i - 1, j] = Convert.ToDouble(temp[j]);
+                        arr[i - 1, j] = float.Parse(temp[j]);
                         Console.Write(temp[j]);
                     }
 
@@ -60,7 +60,7 @@ namespace WPF_Main.Components.Models
 
             for (int i = 0; i < arr_countOfColums; i++)
             {
-                LinkedList<double> list = new LinkedList<double>();
+                LinkedList<float> list = new LinkedList<float>();
                 for (int j = 0; j < arr_countOfRow; j++)
                 {
                     list.AddLast(arr[j, i]);
@@ -77,15 +77,15 @@ namespace WPF_Main.Components.Models
 
 
         public string Learning_sample_str { get => _learning_sample_str; set => _learning_sample_str = value; }
-        public Dictionary<string, LinkedList<double>> Learning_sampleMap { get => _learning_sampleMap;}
+        public Dictionary<string, LinkedList<float>> Learning_sampleMap { get => _learning_sampleMap;}
 
         private string convert_mapToString()
         {
             string str = "";
-            foreach (KeyValuePair<string, LinkedList<double>> pair in _learning_sampleMap)
+            foreach (KeyValuePair<string, LinkedList<float>> pair in _learning_sampleMap)
             {
                 str += pair.Key + " \n";
-                foreach (double num in pair.Value)
+                foreach (float num in pair.Value)
                 {
                     str += num.ToString() + '\t';
                 }
@@ -94,12 +94,17 @@ namespace WPF_Main.Components.Models
             return str;
         }
 
-        public double[] getArrayByKey(string column_name)
+        public float[] getArrayByKey(string key)
         {
-            LinkedList<double> list;
-            _learning_sampleMap.TryGetValue(column_name,out list);
-            double[] arr = list.ToArray<double>();
+            LinkedList<float> list;
+            _learning_sampleMap.TryGetValue(key,out list);
+            float[] arr = list.ToArray<float>();
             return arr;
+        }
+
+        public string[] getDictionaryKeys()
+        {
+            return _learning_sampleMap.Keys.ToArray();
         }
     }
 }
