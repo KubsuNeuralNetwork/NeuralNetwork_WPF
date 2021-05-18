@@ -77,10 +77,10 @@
     <Compile Include="Components\Forms\LearningSet\LearningSet_window.xaml.cs">
       <DependentUpon>LearningSet_window.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Components\Models\Learning_sample.cs" />
+    <Compile Include="Components\LiveParams.cs" />
+    <Compile Include="Components\Service\Learning_sample.cs" />
     <Compile Include="Components\Service\Manager.cs" />
     <Compile Include="Components\Service\MLP.cs" />
-    <Compile Include="Components\Service\OpenFileService.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

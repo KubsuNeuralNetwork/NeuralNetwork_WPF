@@ -5,9 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_Main"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" ResizeMode="NoResize">
+        Title="MainWindow" Height="450" Width="800" ResizeMode="NoResize" Activated="Window_Activated">
     <Grid RenderTransformOrigin="0.5,0.5">
-        <Grid Margin="142,85,143,249">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="342*"/>
+            <RowDefinition Height="79*"/>
+        </Grid.RowDefinitions>
+        <Grid Margin="142,85,143,169.75">
             <Viewbox Stretch="Fill">
                 <Grid Height="85" Width="507">
                     <Border BorderBrush="Black" BorderThickness="1" Height="85" VerticalAlignment="Top" HorizontalAlignment="Right" Width="507">
@@ -22,7 +26,7 @@
                             </TextBlock.RenderTransform>
                         </TextBlock>
                     </Border>
-                    <Button Content="Open File" HorizontalAlignment="Left" Margin="398,25,0,0" VerticalAlignment="Top" Width="99" Click="Button_Click" Height="40" RenderTransformOrigin="1,1" FontFamily="Times New Roman" FontSize="16">
+                    <Button x:Name="MainWindow_open_button" Content="Open File" HorizontalAlignment="Left" Margin="398,25,0,0" VerticalAlignment="Top" Width="99" Click="Button_OpenFile_Click" Height="40" RenderTransformOrigin="1,1" FontFamily="Times New Roman" FontSize="16">
                         <Button.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>
@@ -32,7 +36,7 @@
                             </TransformGroup>
                         </Button.RenderTransform>
                     </Button>
-                    <TextBox x:Name="File_text" HorizontalAlignment="Left" Height="40" Margin="20,25,0,0" Text="TextBox" VerticalAlignment="Top" Width="373" FontSize="20" FontFamily="Times New Roman" VerticalContentAlignment="Center" RenderTransformOrigin="1,1">
+                    <TextBox x:Name="File_text" HorizontalAlignment="Left" Height="40" Margin="20,25,0,0" Text="TextBox" VerticalAlignment="Top" Width="373" FontSize="18" FontFamily="Times New Roman" VerticalContentAlignment="Center" RenderTransformOrigin="1,1" IsTabStop="False" VerticalScrollBarVisibility="Disabled" IsReadOnly="True" FlowDirection="RightToLeft" HorizontalContentAlignment="Right">
                         <TextBox.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>
@@ -45,8 +49,8 @@
                 </Grid>
             </Viewbox>
         </Grid>
-        <Label Content="Нейросети  являются программами, работающими по самообучающи-&#xD;&#xA;мся алгоритмам, поэтому перед использованием их необходимо пред-&#xD;&#xA;варительно обучить. Обучение производится на основании  специаль-&#xD;&#xA;ного набора данных - обучающей  выборки.  Для  обучения  нейросети &#xD;&#xA;необходимо подавать на ее вход данные, для которых заранее опреде-&#xD;&#xA;лены выходные значения. Эти данные находятся в  текстовом  файле &#xD;&#xA;специального вида&#xD;&#xA;" Margin="142,170,143,0" VerticalAlignment="Top"/>
-        <DockPanel Height="77" Margin="0,342,0,0" VerticalAlignment="Top" AutomationProperties.IsOffscreenBehavior="Offscreen" LastChildFill="False" FlowDirection="RightToLeft" Background="#B2F9F9F9">
+        <Label Content="Нейросети  являются программами, работающими по самообучающи-&#xD;&#xA;мся алгоритмам, поэтому перед использованием их необходимо пред-&#xD;&#xA;варительно обучить. Обучение производится на основании  специаль-&#xD;&#xA;ного набора данных - обучающей  выборки.  Для  обучения  нейросети &#xD;&#xA;необходимо подавать на ее вход данные, для которых заранее опреде-&#xD;&#xA;лены выходные значения. Эти данные находятся в  текстовом  файле &#xD;&#xA;специального вида&#xD;&#xA;" Margin="142,172,143,0" VerticalAlignment="Top"/>
+        <DockPanel Height="77" Margin="0,0.25,0,0" VerticalAlignment="Top" AutomationProperties.IsOffscreenBehavior="Offscreen" LastChildFill="False" FlowDirection="RightToLeft" Background="#B2F9F9F9" Grid.Row="1">
             <Button x:Name="Exit_button" Content="Выход" Height="34" VerticalAlignment="Center" Width="112" Margin="28,16,0,18" HorizontalAlignment="Center" FontFamily="Times New Roman" FontSize="16" Click="Exit_button_Click"/>
             <Button x:Name="Next_button" Content="Далее" Height="34" VerticalAlignment="Center" Width="112" Margin="68,16,0,18" HorizontalAlignment="Center" FontFamily="Times New Roman" FontSize="16" Click="Next_button_Click"/>
             <Button x:Name="About_button" Content="О программе" Height="34" VerticalAlignment="Center" Width="112" Margin="64,16,15,18" HorizontalAlignment="Center" DockPanel.Dock="Right" FontFamily="Times New Roman" FontSize="16" Click="About_button_Click"/>
