@@ -7,7 +7,7 @@ public class Manager
     static int[] layers = new int[3] { 3, 5, 1 };
     static string[] activation = new string[2] { "leakyrelu", "leakyrelu" };
 
-    public void Run()
+    public string Run()
     {
         net = new NeuralNetwork(layers, activation);
         for (int i = 0; i < 20000; i++)
@@ -22,12 +22,12 @@ public class Manager
         //net.Load("./MLP.txt");
 
         Console.WriteLine("cost: " + net.cost);
-
-        Console.WriteLine(net.FeedForward(new float[] { 0.5f, 0.5f })[0]);
-        Console.WriteLine(net.FeedForward(new float[] { 0.2f, 0.3f })[0]);
-        Console.WriteLine(net.FeedForward(new float[] { 1f, 0f})[0]);
+        string str = "";
+        str += Convert.ToString(net.FeedForward(new float[] { 0.5f, 0.5f })[0]) + "\n";
+        str += Convert.ToString(net.FeedForward(new float[] { 0.2f, 0.3f })[0]) + "\n";
+        str += Convert.ToString(net.FeedForward(new float[] { 1f, 0f})[0]) + "\n";
         net.Save("./MLP.txt");
-        Console.Read();
+        return str;
 
         //We want the gate to simulate 3 input or gate (A or B or C)
         // 0 0 0    => 0

@@ -13,6 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using WPF_Main.Components.Service;
 using WPF_Main.Components;
+using System.Text.RegularExpressions;
+using WPF_Main.Components.API;
+using WPF_Main.Components.Forms.Training;
 
 namespace WPF_Main.Components.Forms.LearningSet
 {
@@ -25,9 +28,13 @@ namespace WPF_Main.Components.Forms.LearningSet
 
         private Learning_sample learning_Sample;
 
+        private LinkedList<Layer> layers;
+        private int countOfSecretLayers = 0;
+
         public LearningSet_window()
         { 
             InitializeComponent();
+            SecretLayers_textBox.Text = Convert.ToString(countOfSecretLayers);
         }
         private void LerningSet_window_Activated(object sender, EventArgs e)
         {
@@ -44,6 +51,9 @@ namespace WPF_Main.Components.Forms.LearningSet
                     item.Foreground = Brushes.LightGray;
                 }
                 LS_window_ListBox_input.Items.Add(item);
+
+                layers = liveParams.Layers;
+                createLayers();
             }
 
         }
@@ -78,9 +88,9 @@ namespace WPF_Main.Components.Forms.LearningSet
 
         private void Next_button_Click(object sender, RoutedEventArgs e)
         {
-            LearningSet_window learningSet_Window = new LearningSet_window();
-            learningSet_Window.Learning_Sample = learning_Sample;
-            learningSet_Window.Show();
+            Training_window training_window = new Training_window();
+            training_window.LiveParams = liveParams;
+            training_window.Show();
             this.Close();
         }
 
@@ -136,5 +146,93 @@ namespace WPF_Main.Components.Forms.LearningSet
             item.FontWeight = FontWeights.Normal;
             item.Foreground = Brushes.LightGray;
         }
+
+        private void SecretLayers_textBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void SecretLayers_textBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            InputDigits(e);
+        }
+
+        private void createLayers()
+        {
+            if (SecretLayers_textBox.Text.Trim() != "")
+            {
+                int countOfNeuronOnInputLayer = learning_Sample.count_of_inputVectors();
+                int countOfNeuronOnTargetLayer = learning_Sample.count_of_TargetVectors();
+                int countOfLayers = 2 + countOfSecretLayers;
+
+                if (layers.Count == 0)
+                {
+                    Layer layer;
+
+                    layer = new Layer(1, countOfNeuronOnInputLayer, "Входной слой");
+                    layers.AddLast(layer);
+
+                    layer = new Layer(countOfLayers, countOfNeuronOnTargetLayer, "Выходной слой");
+                    layers.AddLast(layer);
+                }
+                drawLayers();               
+            }
+        }
+
+        private void drawLayers()
+        {
+            SecretLayers_ListBox.Items.Clear();
+            foreach (Layer layer in layers)
+            {
+                SecretLayers_ListBox.Items.Add(layer.createLayerView());
+            }
+        }
+
+        private void deleteLastSecretLayer()
+        {
+            Layer layer = new Layer(layers.Count - 1, "Скрытий слой");
+            layers.Last.Value.numberOfLayer--;
+            layers.Remove(layer);
+            
+        }
+        private void addLastSecretLayer()
+        {
+            Layer layer = new Layer(layers.Count, "Скрытий слой");
+            Layer lastLayer = layers.Last.Value;
+            lastLayer.numberOfLayer++;
+            layers.AddLast(lastLayer);
+            layers.Last.Previous.Value = layer;
+        }
+
+        public void InputDigits(TextCompositionEventArgs e)
+        {
+            if ((e.Text) == null || !(e.Text).All(char.IsDigit))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            int prev_countOfSecretLayers = countOfSecretLayers;
+            this.countOfSecretLayers = Convert.ToInt32(SecretLayers_textBox.Text.Trim());
+            if (prev_countOfSecretLayers < countOfSecretLayers)
+            {
+                for (int i = 0; i < Math.Abs(countOfSecretLayers - prev_countOfSecretLayers); i++)
+                {
+                    addLastSecretLayer();
+                    drawLayers();
+                }
+            }
+            if (prev_countOfSecretLayers > countOfSecretLayers)
+            {
+                for (int i = 0; i < Math.Abs(countOfSecretLayers - prev_countOfSecretLayers); i++)
+                {
+                    deleteLastSecretLayer();
+                    drawLayers();
+                }
+            }
+        }
+
     }
 }
