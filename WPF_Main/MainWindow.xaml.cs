@@ -113,5 +113,6 @@ namespace WPF_Main
             about.Owner = this;
             about.ShowDialog();
         }
+
     }
 }

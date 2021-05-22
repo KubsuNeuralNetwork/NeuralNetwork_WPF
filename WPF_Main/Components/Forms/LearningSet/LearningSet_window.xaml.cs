@@ -16,6 +16,7 @@ using WPF_Main.Components;
 using System.Text.RegularExpressions;
 using WPF_Main.Components.API;
 using WPF_Main.Components.Forms.Training;
+using WPF_Main.Components.Forms.AboutActivationFunctions;
 
 namespace WPF_Main.Components.Forms.LearningSet
 {
@@ -29,16 +30,16 @@ namespace WPF_Main.Components.Forms.LearningSet
         private Learning_sample learning_Sample;
 
         private LinkedList<Layer> layers;
-        private int countOfSecretLayers = 0;
+        private int countOfSecretLayers;
 
         public LearningSet_window()
         { 
             InitializeComponent();
-            SecretLayers_textBox.Text = Convert.ToString(countOfSecretLayers);
         }
         private void LerningSet_window_Activated(object sender, EventArgs e)
         {
             learning_Sample = liveParams.Learning_Sample;
+            LS_window_ListBox_input.Items.Clear();
             foreach (string name in learning_Sample.getDictionaryKeys())
             {
                 ListBoxItem item = new ListBoxItem();
@@ -54,6 +55,9 @@ namespace WPF_Main.Components.Forms.LearningSet
 
                 layers = liveParams.Layers;
                 createLayers();
+
+                countOfSecretLayers = liveParams.CountOfSecretLayers;
+                SecretLayers_textBox.Text = Convert.ToString(countOfSecretLayers);
             }
 
         }
@@ -101,7 +105,7 @@ namespace WPF_Main.Components.Forms.LearningSet
 
         private void About_button_Click(object sender, RoutedEventArgs e)
         {
-            About about = new About();
+            AboutActivationFunctions_window about = new AboutActivationFunctions_window();
             about.Owner = this;
             about.ShowDialog();
         }
@@ -147,11 +151,6 @@ namespace WPF_Main.Components.Forms.LearningSet
             item.Foreground = Brushes.LightGray;
         }
 
-        private void SecretLayers_textBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
         private void SecretLayers_textBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             InputDigits(e);
@@ -184,24 +183,25 @@ namespace WPF_Main.Components.Forms.LearningSet
             SecretLayers_ListBox.Items.Clear();
             foreach (Layer layer in layers)
             {
-                SecretLayers_ListBox.Items.Add(layer.createLayerView());
+                if (layer.nameOfLayer == "Слой")
+                    SecretLayers_ListBox.Items.Add(layer.createLayerView());
             }
+
         }
 
         private void deleteLastSecretLayer()
         {
-            Layer layer = new Layer(layers.Count - 1, "Скрытий слой");
+            Layer layer = layers.Last.Previous.Value;
             layers.Last.Value.numberOfLayer--;
-            layers.Remove(layer);
+            layers.Remove(layer);            
             
         }
         private void addLastSecretLayer()
         {
-            Layer layer = new Layer(layers.Count, "Скрытий слой");
-            Layer lastLayer = layers.Last.Value;
-            lastLayer.numberOfLayer++;
-            layers.AddLast(lastLayer);
-            layers.Last.Previous.Value = layer;
+            Layer layer = new Layer(layers.Count + 1);
+            layers.AddBefore(layers.Last,layer);
+            layers.Last.Value.numberOfLayer++;
+            layers.First.Next.Value.IsFirst = true;
         }
 
         public void InputDigits(TextCompositionEventArgs e)
@@ -216,6 +216,7 @@ namespace WPF_Main.Components.Forms.LearningSet
         {
             int prev_countOfSecretLayers = countOfSecretLayers;
             this.countOfSecretLayers = Convert.ToInt32(SecretLayers_textBox.Text.Trim());
+            liveParams.CountOfSecretLayers = countOfSecretLayers;
             if (prev_countOfSecretLayers < countOfSecretLayers)
             {
                 for (int i = 0; i < Math.Abs(countOfSecretLayers - prev_countOfSecretLayers); i++)
@@ -234,5 +235,26 @@ namespace WPF_Main.Components.Forms.LearningSet
             }
         }
 
+        private void SecretLayers_textBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                SecretLayers_textBox.Text = Layer.limitNum(SecretLayers_textBox.Text, 50);
+                if (SecretLayers_textBox.Text != "0")
+                {
+                    SecretLayers_textBox.Text = Layer.deleteNotUsedNull(SecretLayers_textBox.Text);
+                }
+            }
+            catch (FormatException)
+            {
+                SecretLayers_textBox.Text = "";
+            }
+        }
+
+        private void SecretLayers_textBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                Button_Click(this.CreationLayers_button, new RoutedEventArgs());
+        }
     }
 }

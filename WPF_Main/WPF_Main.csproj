@@ -55,6 +55,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Components\Forms\AboutActivationFunctions\AboutActivationFunctions_window.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Components\Forms\About\About_window.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -77,6 +81,9 @@
     </Compile>
     <Compile Include="Components\API\ActivationFunctions.cs" />
     <Compile Include="Components\API\Layer.cs" />
+    <Compile Include="Components\Forms\AboutActivationFunctions\AboutActivationFunctions_window.xaml.cs">
+      <DependentUpon>AboutActivationFunctions_window.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\Forms\About\About_window.xaml.cs">
       <DependentUpon>About_window.xaml</DependentUpon>
     </Compile>

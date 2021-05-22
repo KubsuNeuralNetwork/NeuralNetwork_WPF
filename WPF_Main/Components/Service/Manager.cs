@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System;
 
+
 public class Manager
 {
     static NeuralNetwork net;
@@ -19,7 +20,7 @@ public class Manager
             net.BackPropagate(new float[] { 0.3f, 0.2f }, new float[] { 0.5f });
 
         }
-        //net.Load("./MLP.txt");
+        net.Load("./MLP.txt");
 
         Console.WriteLine("cost: " + net.cost);
         string str = "";
