@@ -69,6 +69,7 @@ namespace WPF_Main
                 File_text.Text = path;
                 InitLearning_sample();
             }
+            Console.WriteLine(learning_Sample.getTargetString());
         }
 
         private void InitLearning_sample()
@@ -113,6 +114,5 @@ namespace WPF_Main
             about.Owner = this;
             about.ShowDialog();
         }
-
     }
 }

@@ -55,19 +55,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Components\Forms\AboutActivationFunctions\AboutActivationFunctions_window.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Components\Forms\About\About_window.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Components\Forms\LearningSet\LearningSet_window.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Components\Forms\Training\Training_window.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -79,21 +71,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Components\API\ActivationFunctions.cs" />
-    <Compile Include="Components\API\Layer.cs" />
-    <Compile Include="Components\Forms\AboutActivationFunctions\AboutActivationFunctions_window.xaml.cs">
-      <DependentUpon>AboutActivationFunctions_window.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Components\Forms\About\About_window.xaml.cs">
       <DependentUpon>About_window.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\Forms\LearningSet\LearningSet_window.xaml.cs">
       <DependentUpon>LearningSet_window.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Components\API\LiveParams.cs" />
-    <Compile Include="Components\Forms\Training\Training_window.xaml.cs">
-      <DependentUpon>Training_window.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Components\LiveParams.cs" />
     <Compile Include="Components\Service\Learning_sample.cs" />
     <Compile Include="Components\Service\Manager.cs" />
     <Compile Include="Components\Service\MLP.cs" />

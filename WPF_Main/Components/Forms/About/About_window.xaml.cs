@@ -11,7 +11,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using WPF_Main.Components.Service;
 
 namespace WPF_Main.Components.Forms
 {
@@ -23,12 +22,6 @@ namespace WPF_Main.Components.Forms
         public About()
         {
             InitializeComponent();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Manager manager = new Manager();
-            About_textBox.Text = manager.Run();
         }
     }
 }

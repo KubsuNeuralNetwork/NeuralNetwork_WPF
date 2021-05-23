@@ -5,68 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_Main.Components.Forms.LearningSet"
         mc:Ignorable="d"
-        Title="LearningSet_window" Height="450" Width="800" Activated="LerningSet_window_Activated" ResizeMode="NoResize">
+        Title="LearningSet_window" Height="450" Width="800" Activated="LerningSet_window_Activated">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="341*"/>
             <RowDefinition Height="78*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="169*"/>
-            <ColumnDefinition Width="625*"/>
+            <ColumnDefinition Width="17*"/>
+            <ColumnDefinition Width="55*"/>
         </Grid.ColumnDefinitions>
         <ListBox x:Name="LS_window_ListBox_input" HorizontalAlignment="Left" Height="289" Margin="30,36,0,0" VerticalAlignment="Top" Width="119" Background="#FFFCF9F9" SelectionChanged="LS_window_ListBox_SelectionChanged"/>
-        <Label Content="Вектора" HorizontalAlignment="Left" Margin="30,10,0,0" VerticalAlignment="Top" Width="119" FontStretch="Expanded" FontFamily="Times New Roman" FontSize="14" Height="26"/>
-        <DockPanel Height="77" Margin="0,1.4,-2.4,0" VerticalAlignment="Top" AutomationProperties.IsOffscreenBehavior="Offscreen" LastChildFill="False" FlowDirection="RightToLeft" Background="#B2F9F9F9" Grid.Row="1" Grid.ColumnSpan="2">
+        <Label Content="Входные вектора" HorizontalAlignment="Left" Margin="30,10,0,0" VerticalAlignment="Top" Width="119" FontStretch="Expanded" FontFamily="Times New Roman" FontSize="14" Height="26"/>
+        <DockPanel Height="77" Margin="0,1,-2,0" VerticalAlignment="Top" AutomationProperties.IsOffscreenBehavior="Offscreen" LastChildFill="False" FlowDirection="RightToLeft" Background="#B2F9F9F9" Grid.Row="1" Grid.ColumnSpan="2">
+            <Button x:Name="Exit_button" Content="Выход" Height="34" VerticalAlignment="Center" Width="112" Margin="28,16,0,18" HorizontalAlignment="Center" FontFamily="Times New Roman" FontSize="16" Click="Exit_button_Click"/>
             <Button x:Name="Next_button" Content="Далее" Height="34" VerticalAlignment="Center" Width="112" Margin="68,16,0,18" HorizontalAlignment="Center" FontFamily="Times New Roman" FontSize="16" Click="Next_button_Click"/>
-            <Button x:Name="About_button" Content="Функции Активации" Height="34" VerticalAlignment="Center" Width="150" Margin="64,20,15,23" HorizontalAlignment="Center" DockPanel.Dock="Right" FontFamily="Times New Roman" FontSize="16" Click="About_button_Click"/>
+            <Button x:Name="About_button" Content="О программе" Height="34" VerticalAlignment="Center" Width="112" Margin="64,16,15,18" HorizontalAlignment="Center" DockPanel.Dock="Right" FontFamily="Times New Roman" FontSize="16" Click="About_button_Click"/>
             <Button x:Name="Back_button" Content="Назад" Height="34" VerticalAlignment="Center" Width="112" Margin="37,20.5,0,22.5" HorizontalAlignment="Center" FontFamily="Times New Roman" FontSize="16" Click="Back_button_Click" />
         </DockPanel>
-        <GroupBox Grid.Column="1" Header="Свойства" HorizontalAlignment="Left" Height="315" Margin="8.2,10,0,0" VerticalAlignment="Top" Width="607" FontFamily="Times New Roman" FontSize="14">
-            <Grid HorizontalAlignment="Left" Width="597" Margin="0,0,-1.8,-4.2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="97*"/>
-                    <RowDefinition Height="199*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="190*"/>
-                    <ColumnDefinition Width="190*"/>
-                    <ColumnDefinition Width="190*"/>
-                </Grid.ColumnDefinitions>
-                <StackPanel x:Name="Normolize_Stack_Panel" HorizontalAlignment="Left" Height="86" Margin="10,10,0,0" VerticalAlignment="Top" Width="168">
-                    <StackPanel.BindingGroup>
-                        <BindingGroup Name="Normolize"/>
-                    </StackPanel.BindingGroup>
-                    <Label Content="Нормализация" BorderThickness="0,0,0,1" BorderBrush="#BF636363" Padding="5,5,5,1"/>
-                    <RadioButton x:Name="MinMax_Nor_radioButton" Content="(X-MIN)/(MAX-MIN)" Margin="0,4,0,0" IsChecked="True" GroupName="Normolize"/>
-                    <RadioButton Content="Не использовать" Margin="0,5,0,0" GroupName="Normolize"/>
-                </StackPanel>
-                <StackPanel x:Name="LayersOfMLP" HorizontalAlignment="Left" Height="86" Margin="10,10,0,0" VerticalAlignment="Top" Width="172" Grid.Column="1">
-                    <StackPanel.BindingGroup>
-                        <BindingGroup Name="Normolize"/>
-                    </StackPanel.BindingGroup>
-                    <Label Content="Значение" BorderThickness="0,0,0,1" BorderBrush="#BF636363" Padding="5,5,5,1"/>
-                    <RadioButton x:Name="Input_vector_RadioButton" Content="Входной вектор" GroupName="Target" Margin="0,4,0,0" Checked="Input_vector_RadioButton_Checked"/>
-                    <RadioButton x:Name="Target_vector_radioButton" Content="Целевой вектор" GroupName="Target" Margin="0,4,0,0" Checked="Target_vector_radioButton_Checked"/>
-                    <RadioButton x:Name="NotUsed_vector_radioButton" Content="Не использовать" GroupName="Target" Margin="0,4,0,0" Checked="NotUsed_vector_radioButton_Checked"/>
-                </StackPanel>
-                <StackPanel x:Name="LayersOfMLP_Copy" HorizontalAlignment="Left" Height="86" Margin="10,10,0,0" VerticalAlignment="Top" Width="172" Grid.Column="2">
-                    <StackPanel.BindingGroup>
-                        <BindingGroup
-                            Name="Normolize"/>
-                    </StackPanel.BindingGroup>
-                    <Label x:Name="Layers_label" Content="Слои" BorderThickness="0,0,0,1" BorderBrush="#BF636363" Padding="5,5,5,1"/>
-                    <StackPanel x:Name="Count_of_secret_layers" MaxHeight="50" Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Label x:Name="Secret_layers" HorizontalAlignment="Right" Content="Скрытые слои:" Margin="0,0,13,0"/>
-                        <TextBox x:Name="SecretLayers_textBox" Height="23" TextWrapping="Wrap" MaxWidth="120" HorizontalAlignment="Right" Margin="0,2,7,0" Width="52" PreviewTextInput="SecretLayers_textBox_PreviewTextInput" TextChanged="SecretLayers_textBox_TextChanged" KeyDown="SecretLayers_textBox_KeyDown" MouseLeftButtonDown="SecretLayers_textBox_MouseLeftButtonDown"/>
-                    </StackPanel>
-                    <Button x:Name="CreationLayers_button" Content="Создать слои" Click="Button_Click" Margin="0,4,0,0"/>
-                </StackPanel>
-                <StackPanel Grid.ColumnSpan="3" HorizontalAlignment="Left" Height="199" Margin="10,0.4,0,-0.2" Grid.Row="1" VerticalAlignment="Top" Width="555">
-                    <Label x:Name="Secret_Label" Content="Скрыте слои и функции активации" HorizontalAlignment="Center" BorderThickness="0,0,0,1" BorderBrush="Black" Padding="5,5,5,3"/>
-                    <ListBox x:Name="SecretLayers_ListBox" Height="159" Margin="0,2,-20.8,0" HorizontalAlignment="Left" Width="576"/>
-                </StackPanel>
-            </Grid>
-        </GroupBox>
+        <GroupBox Grid.Column="1" Header="Свойства" HorizontalAlignment="Left" Height="315" Margin="10,10,0,0" VerticalAlignment="Top" Width="558"/>
     </Grid>
 </Window>
