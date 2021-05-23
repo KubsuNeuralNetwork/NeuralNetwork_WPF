@@ -18,6 +18,10 @@ namespace WPF_Main.Components
         private LinkedList<Layer> layers;
         private int countOfSecretLayers;
 
+        // получаем в Training_window
+        private LinkedList<NeuralNetwork> nets;
+        private int epoch;
+
         public LiveParams()
         {
             path = null;
@@ -29,6 +33,8 @@ namespace WPF_Main.Components
         public string Path { get => path; set => path = value; }
         public LinkedList<Layer> Layers { get => layers; set => layers = value; }
         public int CountOfSecretLayers { get => countOfSecretLayers; set => countOfSecretLayers = value; }
+        public LinkedList<NeuralNetwork> Nets { get => nets; set => nets = value; }
+        public int Epoch { get => epoch; set => epoch = value; }
         internal Learning_sample Learning_Sample { get => learning_Sample; set => learning_Sample = value; }
 
         public string[] getActivationsArray()

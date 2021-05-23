@@ -71,6 +71,7 @@ namespace WPF_Main.Components.Service
             }
             isTarget.Last.Value.IsTarget = 1;
             _learning_sample_str = convert_mapToString();
+
         }
 
 

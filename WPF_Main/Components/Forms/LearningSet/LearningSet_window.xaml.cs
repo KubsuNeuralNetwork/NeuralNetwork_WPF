@@ -59,6 +59,7 @@ namespace WPF_Main.Components.Forms.LearningSet
                 countOfSecretLayers = liveParams.CountOfSecretLayers;
                 SecretLayers_textBox.Text = Convert.ToString(countOfSecretLayers);
             }
+            LS_window_ListBox_input.SelectedItem = LS_window_ListBox_input.Items.GetItemAt(0);
 
         }
         internal Learning_sample Learning_Sample { get => learning_Sample; set => learning_Sample = value; }
@@ -67,8 +68,11 @@ namespace WPF_Main.Components.Forms.LearningSet
         private void LS_window_ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListBoxItem item = (ListBoxItem)LS_window_ListBox_input.SelectedItem;
-            int target = learning_Sample.isTargetItem((string)item.Content);
-            Load_Target_RadioButton(target);
+            if (item != null)
+            {
+                int target = learning_Sample.isTargetItem((string)item.Content);
+                Load_Target_RadioButton(target);
+            }
         }
 
         private void Load_Target_RadioButton(int target)
@@ -239,6 +243,8 @@ namespace WPF_Main.Components.Forms.LearningSet
         {
             try
             {
+                TextBox textBox = (TextBox)sender;
+                textBox.Text = textBox.Text.Replace(" ", string.Empty);
                 SecretLayers_textBox.Text = Layer.limitNum(SecretLayers_textBox.Text, 50);
                 if (SecretLayers_textBox.Text != "0")
                 {
@@ -255,6 +261,20 @@ namespace WPF_Main.Components.Forms.LearningSet
         {
             if (e.Key == Key.Enter)
                 Button_Click(this.CreationLayers_button, new RoutedEventArgs());
+        }
+
+        private void SecretLayers_textBox_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+            TextBox textBox = (TextBox)sender;
+            textBox.Select(0, textBox.Text.Length);
+        }
+
+        private void SecretLayers_textBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
+            TextBox textBox = (TextBox)sender;
+            textBox.Select(0, textBox.Text.Length);
         }
     }
 }
