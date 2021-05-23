@@ -26,7 +26,7 @@
                             </TextBlock.RenderTransform>
                         </TextBlock>
                     </Border>
-                    <Button x:Name="MainWindow_open_button" Content="Open File" HorizontalAlignment="Left" Margin="398,25,0,0" VerticalAlignment="Top" Width="99" Click="Button_OpenFile_Click" Height="40" RenderTransformOrigin="1,1" FontFamily="Times New Roman" FontSize="16">
+                    <Button x:Name="MainWindow_open_button" Content="Выбрать" HorizontalAlignment="Left" Margin="398,25,0,0" VerticalAlignment="Top" Width="99" Click="Button_OpenFile_Click" Height="40" RenderTransformOrigin="1,1" FontFamily="Times New Roman" FontSize="16">
                         <Button.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>
@@ -36,7 +36,7 @@
                             </TransformGroup>
                         </Button.RenderTransform>
                     </Button>
-                    <TextBox x:Name="File_text" HorizontalAlignment="Left" Height="40" Margin="20,25,0,0" Text="TextBox" VerticalAlignment="Top" Width="373" FontSize="18" FontFamily="Times New Roman" VerticalContentAlignment="Center" RenderTransformOrigin="1,1" IsTabStop="False" VerticalScrollBarVisibility="Disabled" IsReadOnly="True" FlowDirection="RightToLeft" HorizontalContentAlignment="Right">
+                    <TextBox x:Name="File_text" HorizontalAlignment="Left" Height="40" Margin="20,25,0,0" Text="Путь к файлу" VerticalAlignment="Top" Width="373" FontSize="18" FontFamily="Times New Roman" VerticalContentAlignment="Center" RenderTransformOrigin="1,1" IsTabStop="False" VerticalScrollBarVisibility="Disabled" IsReadOnly="True" FlowDirection="RightToLeft" HorizontalContentAlignment="Right">
                         <TextBox.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>

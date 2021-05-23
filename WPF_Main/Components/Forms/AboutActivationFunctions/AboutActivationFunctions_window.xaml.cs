@@ -11,24 +11,17 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using WPF_Main.Components.Service;
 
-namespace WPF_Main.Components.Forms
+namespace WPF_Main.Components.Forms.AboutActivationFunctions
 {
     /// <summary>
-    /// Логика взаимодействия для About.xaml
+    /// Логика взаимодействия для AboutActivationFunctions_window.xaml
     /// </summary>
-    public partial class About : Window
+    public partial class AboutActivationFunctions_window : Window
     {
-        public About()
+        public AboutActivationFunctions_window()
         {
             InitializeComponent();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Manager manager = new Manager();
-            About_textBox.Text = manager.Run();
         }
     }
 }
