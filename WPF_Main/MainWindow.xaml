@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_Main"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" ResizeMode="NoResize" Activated="Window_Activated">
+        Title="MainWindow" Height="450" Width="800" ResizeMode="NoResize" Activated="Window_Activated" WindowStartupLocation="CenterScreen">
     <Grid RenderTransformOrigin="0.5,0.5">
         <Grid.RowDefinitions>
             <RowDefinition Height="342*"/>

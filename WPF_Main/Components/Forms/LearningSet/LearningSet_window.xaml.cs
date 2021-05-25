@@ -53,12 +53,12 @@ namespace WPF_Main.Components.Forms.LearningSet
                 }
                 LS_window_ListBox_input.Items.Add(item);
 
-                layers = liveParams.Layers;
-                createLayers();
 
-                countOfSecretLayers = liveParams.CountOfSecretLayers;
-                SecretLayers_textBox.Text = Convert.ToString(countOfSecretLayers);
             }
+            countOfSecretLayers = liveParams.CountOfSecretLayers;
+            SecretLayers_textBox.Text = Convert.ToString(countOfSecretLayers);
+            layers = liveParams.Layers;
+            createLayers();
             LS_window_ListBox_input.SelectedItem = LS_window_ListBox_input.Items.GetItemAt(0);
 
         }
@@ -91,8 +91,6 @@ namespace WPF_Main.Components.Forms.LearningSet
             }
 
         }
-
-
 
         private void Next_button_Click(object sender, RoutedEventArgs e)
         {

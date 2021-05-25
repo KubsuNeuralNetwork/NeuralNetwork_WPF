@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_Main.Components.Forms.LearningSet"
         mc:Ignorable="d"
-        Title="LearningSet_window" Height="450" Width="800" Activated="LerningSet_window_Activated" ResizeMode="NoResize">
+        Title="LearningSet_window" Height="450" Width="800" Activated="LerningSet_window_Activated" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="341*"/>
