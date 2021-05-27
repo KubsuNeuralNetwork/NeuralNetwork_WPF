@@ -59,6 +59,7 @@ namespace WPF_Main.Components.Forms.Training
             isCost = liveParams.IsCost;
             epochCount = liveParams.Epoch;
             cost = liveParams.Cost;
+            nets = liveParams.Nets;
 
             ForTesting_textBox.Text = Convert.ToString(forTestingPercent);
             CountOfNets_textBox.Text = Convert.ToString(countOfNets);
@@ -90,6 +91,7 @@ namespace WPF_Main.Components.Forms.Training
             liveParams.Cost = cost;
             liveParams.IsCost = isCost;
             liveParams.IsEpoch = isEpoch;
+            liveParams.Nets = nets;
             mainWindow.LiveParams = liveParams;
             mainWindow.Show();
             this.Close();
@@ -135,7 +137,6 @@ namespace WPF_Main.Components.Forms.Training
                 countOfNets = limitCountOfNets;
                 liveParams.CountOfNets = countOfNets;
             }
-
         }
 
         private void learninTemp_textBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -219,12 +220,10 @@ namespace WPF_Main.Components.Forms.Training
         }
 
         private void Cost_checkBox_Checked(object sender, RoutedEventArgs e)
-        {
-            
+        {            
             Cost_textBox.IsEnabled = true;
             isCost = true;
             cost = float.Parse(Cost_textBox.Text);
-
         }
 
         private void Epoch_checkBox_Unchecked(object sender, RoutedEventArgs e)
