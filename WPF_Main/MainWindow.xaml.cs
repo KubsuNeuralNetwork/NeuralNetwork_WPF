@@ -55,6 +55,7 @@ namespace WPF_Main
         private void Button_OpenFile_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Обучающая выборка (*TXT)|*.TXT";
             File_text.Foreground = Brushes.Black;
             if (openFileDialog.ShowDialog() == true)
             {

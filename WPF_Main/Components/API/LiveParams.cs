@@ -20,14 +20,28 @@ namespace WPF_Main.Components
 
         // получаем в Training_window
         private LinkedList<NeuralNetwork> nets;
-        private int epoch;
+        private int epoch; 
+        private int forTestingPercent;
+        private int countOfNets;
+        private float learningTemp;
+        private float cost;
+        private bool isEpoch;
+        private bool isCost;
 
         public LiveParams()
         {
             path = null;
             learning_Sample = null;
             layers = new LinkedList<Layer>();
+            nets = new LinkedList<NeuralNetwork>();
             countOfSecretLayers = 0;
+            epoch = 10000;
+            forTestingPercent = 80;
+            countOfNets = 1;
+            learningTemp = 0.01f;
+            cost = 0.5f;
+            isCost = false;
+            isEpoch = false;
         }
 
         public string Path { get => path; set => path = value; }
@@ -35,6 +49,12 @@ namespace WPF_Main.Components
         public int CountOfSecretLayers { get => countOfSecretLayers; set => countOfSecretLayers = value; }
         public LinkedList<NeuralNetwork> Nets { get => nets; set => nets = value; }
         public int Epoch { get => epoch; set => epoch = value; }
+        public int ForTestingPercent { get => forTestingPercent; set => forTestingPercent = value; }
+        public int CountOfNets { get => countOfNets; set => countOfNets = value; }
+        public float LearningTemp { get => learningTemp; set => learningTemp = value; }
+        public float Cost { get => cost; set => cost = value; }
+        public bool IsEpoch { get => isEpoch; set => isEpoch = value; }
+        public bool IsCost { get => isCost; set => isCost = value; }
         internal Learning_sample Learning_Sample { get => learning_Sample; set => learning_Sample = value; }
 
         public string[] getActivationsArray()
