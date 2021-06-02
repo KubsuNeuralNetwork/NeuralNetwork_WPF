@@ -27,7 +27,8 @@ namespace WPF_Main.Components
         private float cost;
         private bool isEpoch;
         private bool isCost;
-
+        private int currEpoch;
+        private float currCost;
         public LiveParams()
         {
             path = null;
@@ -42,6 +43,36 @@ namespace WPF_Main.Components
             cost = 0.5f;
             isCost = false;
             isEpoch = false;
+            currEpoch = 0;
+            currCost = 0f;
+        }
+
+        public int[] getLayers()
+        {
+            int[] result = new int[layers.Count];
+            int i = 0;
+            foreach (Layer item in layers)
+            {
+                result[i] = item.countOfNeurons;
+                i++;
+            }
+            return result;
+        }
+
+        public string[] getActivations()
+        {
+            string[] result = new string[layers.Count-1];
+            int i = -1;
+            foreach (Layer item in layers)
+            { 
+                if (i == -1)
+                {
+                    i++;
+                    continue;
+                }
+                result[i] = Convert.ToString(item.function);
+            }
+            return result; 
         }
 
         public string Path { get => path; set => path = value; }
@@ -55,6 +86,8 @@ namespace WPF_Main.Components
         public float Cost { get => cost; set => cost = value; }
         public bool IsEpoch { get => isEpoch; set => isEpoch = value; }
         public bool IsCost { get => isCost; set => isCost = value; }
+        public int CurrEpoch { get => currEpoch; set => currEpoch = value; }
+        public float CurrCost { get => currCost; set => currCost = value; }
         internal Learning_sample Learning_Sample { get => learning_Sample; set => learning_Sample = value; }
 
         public string[] getActivationsArray()

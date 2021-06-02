@@ -18,6 +18,8 @@ using WPF_Main.Components.API;
 using WPF_Main.Components.Forms.Training;
 using WPF_Main.Components.Forms.AboutActivationFunctions;
 using WPF_Main.Components.Forms.LearningSet;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace WPF_Main.Components.Forms.Training
 {
@@ -38,6 +40,9 @@ namespace WPF_Main.Components.Forms.Training
         private int epochCount;
         private bool isCost;
         private float cost;
+        private int currEpoch;
+        private float currCost;
+
 
         private const int limitForTestingPercent = 100;
         private const int limitCountOfNets = 5;
@@ -45,9 +50,15 @@ namespace WPF_Main.Components.Forms.Training
         private const int limitEpochCount = 1000000;
         private const float limitCost = 2f;
 
+        private string[] activations;
+
+        private bool isTraining = false;
+
+
         public Training_window()
         {
             InitializeComponent();
+            CompositionTarget.Rendering += CompositionTarget_Rendering;
         }
         private void Window_Activated(object sender, EventArgs e)
         {
@@ -60,12 +71,16 @@ namespace WPF_Main.Components.Forms.Training
             epochCount = liveParams.Epoch;
             cost = liveParams.Cost;
             nets = liveParams.Nets;
+            currEpoch = liveParams.CurrEpoch;
+            currCost = liveParams.CurrCost;
 
             ForTesting_textBox.Text = Convert.ToString(forTestingPercent);
             CountOfNets_textBox.Text = Convert.ToString(countOfNets);
             learninTemp_textBox.Text = Convert.ToString(learningTemp);
             Epoch_textBox.Text = Convert.ToString(epochCount);
             Cost_textBox.Text = Convert.ToString(cost);
+            CurrErrorNum_label.Content = Convert.ToString(currCost);
+            CurrEpochNum_label.Content = Convert.ToString(currEpoch);
             Epoch_checkBox.IsChecked = isEpoch;
             Cost_checkBox.IsChecked = isCost;
         }
@@ -92,6 +107,8 @@ namespace WPF_Main.Components.Forms.Training
             liveParams.IsCost = isCost;
             liveParams.IsEpoch = isEpoch;
             liveParams.Nets = nets;
+            liveParams.CurrEpoch = currEpoch;
+            liveParams.CurrCost = currCost;
             mainWindow.LiveParams = liveParams;
             mainWindow.Show();
             this.Close();
@@ -240,9 +257,38 @@ namespace WPF_Main.Components.Forms.Training
             Cost_textBox.IsEnabled = false;
         }
 
+        private void Learn()
+        {           
+            while (isTraining)
+            {
+                Thread.Sleep(100);
+                currEpoch++;                
+            }
+        }
+
         private void StartLearning_button_Click(object sender, RoutedEventArgs e)
         {
-            
+            isTraining = true;
+            activations = liveParams.getActivations();
+            Task task = Task.Run(Learn);
+        }
+
+        private void StopLearning_button_Click(object sender, RoutedEventArgs e)
+        {
+            Task task = Task.Run(() =>
+            {
+                isTraining = false;
+            });
+        }
+
+        private void Training_Window_ContentRendered(object sender, EventArgs e)
+        {
+
+        }
+
+        private void CompositionTarget_Rendering(object sender, EventArgs e)
+        {
+            CurrEpochNum_label.Content = currEpoch;
         }
     }
 }

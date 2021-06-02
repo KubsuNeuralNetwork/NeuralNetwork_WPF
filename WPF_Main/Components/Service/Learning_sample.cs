@@ -78,7 +78,6 @@ namespace WPF_Main.Components.Service
         {
         }
 
-
         public string Learning_sample_str { get => _learning_sample_str; set => _learning_sample_str = value; }
         public Dictionary<string, LinkedList<float>> Learning_sampleMap { get => _learning_sampleMap; }
         internal LinkedList<VectorsNames> IsTarget { get => isTarget; set => isTarget = value; }
@@ -114,6 +113,7 @@ namespace WPF_Main.Components.Service
             return arr;
         }
 
+        // Нормализовать все входные данные
         public void Normalize()
         {
             string[] str = _learning_sampleMap.Keys.ToArray();
@@ -204,8 +204,7 @@ namespace WPF_Main.Components.Service
             }
             return counter;
         }
-
-        public void add_min_max(float min, float max, string str)
+        private void add_min_max(float min, float max, string str)
         {
             VectorsNames vect = IsTarget.Find(new VectorsNames(str)).Value;
             vect.Min = min;
