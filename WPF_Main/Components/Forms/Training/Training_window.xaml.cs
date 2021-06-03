@@ -18,6 +18,7 @@ using WPF_Main.Components.API;
 using WPF_Main.Components.Forms.Training;
 using WPF_Main.Components.Forms.AboutActivationFunctions;
 using WPF_Main.Components.Forms.LearningSet;
+using WPF_Main.Components.Forms.Testing;
 using System.Threading.Tasks;
 using System.Threading;
 
@@ -117,7 +118,20 @@ namespace WPF_Main.Components.Forms.Training
 
         private void Next_button_Click(object sender, RoutedEventArgs e)
         {
-
+            Testing_window newWindow = new Testing_window();
+            liveParams.LearningTemp = learningTemp;
+            liveParams.ForTestingPercent = forTestingPercent;
+            liveParams.CountOfNets = countOfNets;
+            liveParams.Epoch = epochCount;
+            liveParams.Cost = cost;
+            liveParams.IsCost = isCost;
+            liveParams.IsEpoch = isEpoch;
+            liveParams.Nets = nets;
+            liveParams.CurrEpoch = currEpoch;
+            liveParams.CurrCost = currCost;
+            newWindow.LiveParams = liveParams;
+            newWindow.Show();
+            this.Close();
         }
 
         private void About_button_Click(object sender, RoutedEventArgs e)
@@ -293,12 +307,15 @@ namespace WPF_Main.Components.Forms.Training
 
         private void StartLearning_button_Click(object sender, RoutedEventArgs e)
         {
-            isTraining = true;
-            activations = liveParams.getActivations();
-            layers = liveParams.getLayers();
-            learning_Sample.Normalize();
-            countOfNets = Convert.ToInt32(CountOfNets_textBox.Text);
-            Task task = Task.Run(Learn);
+            if (isTraining == false)
+            {
+                isTraining = true;
+                activations = liveParams.getActivations();
+                layers = liveParams.getLayers();
+                learning_Sample.Normalize();
+                countOfNets = Convert.ToInt32(CountOfNets_textBox.Text);
+                Task task = Task.Run(Learn);
+            }
         }
 
         private void StopLearning_button_Click(object sender, RoutedEventArgs e)

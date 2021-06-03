@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using WPF_Main.Components.API;
 
 namespace WPF_Main.Components.Service
 {
@@ -324,11 +328,13 @@ namespace WPF_Main.Components.Service
         private int isTarget;
         private float min;
         private float max;
+        private float curr_value;
 
         public VectorsNames(string name)
         {
             this.name = name;
             this.isTarget = 0;
+            this.curr_value = 0;
         }
 
         public new string ToString => (name + " " + isTarget);
@@ -337,11 +343,55 @@ namespace WPF_Main.Components.Service
         public string Name { get => name; set => name = value; }
         public float Min { get => min; set => min = value; }
         public float Max { get => max; set => max = value; }
+        public float Curr_value { get => curr_value; set => curr_value = value; }
 
         public override bool Equals(object obj)
         {
             return obj is VectorsNames names &&
                    name == names.name;
+        }
+
+        public ListBoxItem getView()
+        {
+            ListBoxItem listBoxItem = new ListBoxItem();
+            listBoxItem.Height = 33;
+            StackPanel stack = new StackPanel();
+            stack.Orientation = Orientation.Horizontal;
+
+            Label column_name_Label = new Label();
+            column_name_Label.Content = name;
+            column_name_Label.MinWidth = 60;
+            column_name_Label.MaxWidth = 80;            
+            stack.Children.Add(column_name_Label);
+
+
+            TextBox input = new TextBox();
+            input.PreviewTextInput += Layer.InputDouble;
+            input.TextChanged += TextBox_TextChanged;
+            input.Text = Convert.ToString(curr_value);
+            input.Width = 80;
+            input.Margin = new Thickness(5, 0, 0, 0);
+            stack.Children.Add(input);
+
+            listBoxItem.Content = stack;
+
+            return listBoxItem;
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                TextBox textBox = (TextBox)sender;
+                textBox.Text = textBox.Text.Replace(" ", string.Empty);
+                textBox.Text = Layer.limitDouble(textBox.Text, 100000f);
+                textBox.Text = Layer.deleteNotUsedNull(textBox.Text);
+                this.curr_value = float.Parse(textBox.Text);
+            }
+            catch (FormatException)
+            {
+                this.curr_value = 10000f;
+            }
         }
 
         public override int GetHashCode()

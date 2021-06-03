@@ -155,10 +155,10 @@ namespace WPF_Main.Components.API
             stackPanel.Children.Add(activationParam_textBox);
 
 
-            listBoxItem.Content = stackPanel;
-
             listBoxItem.BorderBrush = Brushes.Black;
             listBoxItem.BorderThickness = new Thickness(0, 1, 0, 0);
+            listBoxItem.Content = stackPanel;
+
             if (isFirst)
                 listBoxItem.BorderThickness = new Thickness(0, 0, 0, 0);
             return listBoxItem;
