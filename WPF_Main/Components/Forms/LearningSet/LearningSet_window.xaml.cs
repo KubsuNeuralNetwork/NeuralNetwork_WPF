@@ -39,22 +39,7 @@ namespace WPF_Main.Components.Forms.LearningSet
         private void LerningSet_window_Activated(object sender, EventArgs e)
         {
             learning_Sample = liveParams.Learning_Sample;
-            LS_window_ListBox_input.Items.Clear();
-            foreach (string name in learning_Sample.getDictionaryKeys())
-            {
-                ListBoxItem item = new ListBoxItem();
-                item.Content = name;
-                item.Height = 20;
-                if (learning_Sample.isTargetItem(name) == 1)
-                    item.FontWeight = FontWeights.Bold;
-                if (learning_Sample.isTargetItem(name) == -1)
-                {
-                    item.Foreground = Brushes.LightGray;
-                }
-                LS_window_ListBox_input.Items.Add(item);
-
-
-            }
+            drawVectors();
             countOfSecretLayers = liveParams.CountOfSecretLayers;
             SecretLayers_textBox.Text = Convert.ToString(countOfSecretLayers);
             layers = liveParams.Layers;
@@ -75,6 +60,23 @@ namespace WPF_Main.Components.Forms.LearningSet
             }
         }
 
+        private void drawVectors()
+        {
+
+            LS_window_ListBox_input.Items.Clear();
+            foreach (VectorsNames name in learning_Sample.IsTarget)
+            {
+                ListBoxItem item = new ListBoxItem();
+                item.Content = name.Name;
+                item.Height = 20;
+                if (name.IsTarget == 1)
+                    item.FontWeight = FontWeights.Bold;
+                if (name.IsTarget == -1)
+                    item.Foreground = Brushes.LightGray;
+
+                LS_window_ListBox_input.Items.Add(item);
+            }
+        }
         private void Load_Target_RadioButton(int target)
         {
             switch (target)
@@ -132,25 +134,30 @@ namespace WPF_Main.Components.Forms.LearningSet
         private void Input_vector_RadioButton_Checked(object sender, RoutedEventArgs e)
         {
             ListBoxItem item = (ListBoxItem)LS_window_ListBox_input.SelectedItem;
-            learning_Sample.changeTargetItem((string)item.Content, 0);
-            item.FontWeight = FontWeights.Normal;
-            item.Foreground = Brushes.Black;
+            bool flag = learning_Sample.changeTargetItem((string)item.Content, 0);
+            if (flag)            
+                drawVectors();
+            Load_Target_RadioButton(learning_Sample.IsTarget.Find(new VectorsNames((string)item.Content)).Value.IsTarget);
+
         }
 
         private void Target_vector_radioButton_Checked(object sender, RoutedEventArgs e)
         {
             ListBoxItem item = (ListBoxItem)LS_window_ListBox_input.SelectedItem;
-            learning_Sample.changeTargetItem((string)item.Content, 1);
-            item.FontWeight = FontWeights.Bold;
-            item.Foreground = Brushes.Black;
+            bool flag = learning_Sample.changeTargetItem((string)item.Content, 1);
+            if (flag)
+                drawVectors();
+            Load_Target_RadioButton(learning_Sample.IsTarget.Find(new VectorsNames((string)item.Content)).Value.IsTarget);
+
         }
 
         private void NotUsed_vector_radioButton_Checked(object sender, RoutedEventArgs e)
         {
             ListBoxItem item = (ListBoxItem)LS_window_ListBox_input.SelectedItem;
-            learning_Sample.changeTargetItem((string)item.Content, -1);
-            item.FontWeight = FontWeights.Normal;
-            item.Foreground = Brushes.LightGray;
+            bool flag = learning_Sample.changeTargetItem((string)item.Content, -1);
+            if (flag)
+                drawVectors();
+            Load_Target_RadioButton(learning_Sample.IsTarget.Find(new VectorsNames((string)item.Content)).Value.IsTarget);
         }
 
         private void SecretLayers_textBox_PreviewTextInput(object sender, TextCompositionEventArgs e)

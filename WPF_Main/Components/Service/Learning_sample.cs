@@ -16,6 +16,8 @@ namespace WPF_Main.Components.Service
         private string[] _columns_names;
         private string _learning_sample_str;
         private float[,] norm;
+        private int j_size;
+        private int i_size;
         public Learning_sample(string learning_sample_str)
         {
             isTarget = new LinkedList<VectorsNames>();
@@ -82,6 +84,8 @@ namespace WPF_Main.Components.Service
         public Dictionary<string, LinkedList<float>> Learning_sampleMap { get => _learning_sampleMap; }
         internal LinkedList<VectorsNames> IsTarget { get => isTarget; set => isTarget = value; }
         public float[,] Norm { get => norm; set => norm = value; }
+        public int I_size { get => j_size; set => j_size = value; }
+        public int J_size { get => i_size; set => i_size = value; }
 
         private string convert_mapToString()
         {
@@ -113,33 +117,91 @@ namespace WPF_Main.Components.Service
             return arr;
         }
 
+        public LinkedList<float> getListByKey(string key)
+        {
+            LinkedList<float> list;
+            _learning_sampleMap.TryGetValue(key, out list);
+            return list;
+        }
+
         // Нормализовать все входные данные
         public void Normalize()
         {
             string[] str = _learning_sampleMap.Keys.ToArray();
             float max, min;
             LinkedList<float> list;
-            int i_size = str.Length, j_size;
+            j_size = str.Length;
             _learning_sampleMap.TryGetValue(str[0], out list);
-            j_size = list.Count;
-            norm = new float[i_size, j_size];
+            i_size = list.Count;
+            norm = new float[i_size, j_size];           
             for (int j = 0; j < j_size; j++)
             {
                 _learning_sampleMap.TryGetValue(str[j], out list);
-                float[] dop = list.ToArray<float>();
-                max = dop[0];
-                min = dop[0];
-                for (int i = 0; i < i_size; i++)
+                max = list.First.Value;
+                min = list.First.Value;
+                foreach (float num in list)
                 {
-                    if (dop[i] < min) min = dop[i];
-                    if (dop[i] > max) max = dop[i];
+                    if (num < min) min = num;
+                    if (num > max) max = num;
                 }
-                for (int i = 0; i < i_size; i++)
-                {
-                    norm[i, j] = (dop[i] - min) / (max - min);
-                }
+                if (min != max)
+                    foreach (float num in list)
+                    {
+                        list.Find(num).Value = (num - min) / (max - min);
+                    }
+                else if (min != 0)
+                    foreach (float num in list)
+                    {
+                        list.Find(num).Value = num / min;
+                    }
+                _learning_sampleMap.Remove(str[j]);
+                _learning_sampleMap.Add(str[j], list);
                 add_min_max(min, max, str[j]);
             }
+;
+            Console.WriteLine(convert_mapToString());
+            createNormMatrix();
+            for (int i = 0; i < i_size; i++)
+            {
+                for (int j = 0; j < j_size; j++)
+                {
+                    Console.Write(norm[i, j] + " ");
+                }
+                Console.Write("\n");
+            }
+        }
+
+        private void createNormMatrix()
+        {
+            int currColumn = 0;
+            foreach (KeyValuePair<string, LinkedList<float>> pair in _learning_sampleMap)
+            {
+                if (isTarget.Find(new VectorsNames(pair.Key)).Value.IsTarget == 0)
+                {
+                    int j = 0;
+                    foreach (float num in pair.Value)
+                    {
+                        norm[j, currColumn] = num;
+                        j++;
+                    }
+                    currColumn++;
+                }
+            }
+            foreach (KeyValuePair<string, LinkedList<float>> pair in _learning_sampleMap)
+            {
+                if (isTarget.Find(new VectorsNames(pair.Key)).Value.IsTarget == 1)
+                {
+                    int j = 0;
+                    foreach (float num in pair.Value)
+                    {
+                        norm[j, currColumn] = num;
+                        j++;
+                    }
+                    currColumn++;
+                }
+            }
+
+
         }
 
         public LinkedList<float> reverse_Normalize(LinkedList<float> list, float min, float max)
@@ -169,9 +231,51 @@ namespace WPF_Main.Components.Service
         {
             return isTarget.Find(new VectorsNames(name)).Value.IsTarget;
         }
-        public void changeTargetItem(string name, int target)
+        public bool changeTargetItem(string name, int target)
         {
+            int prevTarget = isTarget.Find(new VectorsNames(name)).Value.IsTarget;
+            if (target == prevTarget)
+                return false;
+            switch (target)
+            {
+                case 1:
+                    if (count_of_inputVectors() == 1 && prevTarget == 0)
+                        return false;
+                    break;
+                case 0:
+                    if (count_of_TargetVectors() == 1 && prevTarget == 1)
+                        return false;
+                    break;
+                case -1:
+                    if ((count_of_TargetVectors() - 1 < 1 && prevTarget == 1) || (count_of_inputVectors() - 1 < 1 && prevTarget == 0))
+                        return false;
+                    break;
+            }
             isTarget.Find(new VectorsNames(name)).Value.IsTarget = target;
+            VectorsNames vector = isTarget.Find(new VectorsNames(name)).Value;
+            VectorsNames firstTarget = null;
+            if (target == 1)
+            {
+                isTarget.Remove(new VectorsNames(name));
+                LinkedList<float> list;
+                _learning_sampleMap.TryGetValue(name, out list);                
+                isTarget.AddLast(vector);
+            }
+            if (target == 0)
+            {
+                foreach (VectorsNames item in isTarget)
+                {
+                    if (item.IsTarget == 1)
+                    {
+                        firstTarget = item;
+                        break;
+                    }
+                }
+                isTarget.Remove(new VectorsNames(name));
+                isTarget.AddBefore(isTarget.Find(firstTarget),vector);
+            }
+
+            return true;            
         }
 
         public int count_of_inputVectors()

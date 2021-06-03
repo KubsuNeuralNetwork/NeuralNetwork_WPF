@@ -51,6 +51,7 @@ namespace WPF_Main.Components.Forms.Training
         private const float limitCost = 2f;
 
         private string[] activations;
+        private int[] layers;
 
         private bool isTraining = false;
 
@@ -258,18 +259,45 @@ namespace WPF_Main.Components.Forms.Training
         }
 
         private void Learn()
-        {           
-            while (isTraining)
+        {
+            for (int i = 0; i < countOfNets; i++)
             {
-                Thread.Sleep(100);
+                nets.AddLast(new NeuralNetwork(layers, activations));
+            }
+            float[,] norm = learning_Sample.Norm;
+            int count_of_input = learning_Sample.count_of_inputVectors();
+            int count_of_target = learning_Sample.count_of_TargetVectors();
+            float[] input = new float[count_of_input];
+            float[] target = new float[count_of_target];
+            while (isTraining || (isEpoch && currEpoch < epochCount))
+            {
+                foreach(NeuralNetwork net in nets)
+                {
+                    for(int i = 0; i < learning_Sample.J_size; i++)
+                    {
+                        for (int j = 0; j < learning_Sample.I_size; j++)
+                        {
+                            if (j < count_of_input)
+                                input[j] = norm[i, j];
+                            else
+                                target[j - count_of_input] = norm[i, j];
+                        }
+                        net.BackPropagate(input, target);
+                    }
+                }
                 currEpoch++;                
             }
+            liveParams.CurrEpoch = currEpoch;
+            liveParams.Nets = nets;
         }
 
         private void StartLearning_button_Click(object sender, RoutedEventArgs e)
         {
             isTraining = true;
             activations = liveParams.getActivations();
+            layers = liveParams.getLayers();
+            learning_Sample.Normalize();
+            countOfNets = Convert.ToInt32(CountOfNets_textBox.Text);
             Task task = Task.Run(Learn);
         }
 
