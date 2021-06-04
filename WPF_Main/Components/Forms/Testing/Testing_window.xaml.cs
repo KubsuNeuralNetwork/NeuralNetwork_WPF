@@ -77,18 +77,12 @@ namespace WPF_Main.Components.Forms.Testing
         private void getValues()
         {
             int currInput = 0;
-            int currOutput = 0;
             foreach (VectorsNames vector in learning_Sample.IsTarget)
             {
                 if (vector.IsTarget == 0)
                 {
-                    input[currInput] = vector.Curr_value;
+                    input[currInput] = vector.Norm_value;
                     currInput++;
-                }
-                if (vector.IsTarget == 1)
-                {
-                    output[currOutput] = vector.Curr_value;
-                    currOutput++;
                 }
             }
         }
@@ -104,7 +98,7 @@ namespace WPF_Main.Components.Forms.Testing
                 {
                     if (vector.IsTarget == 1)
                     {
-                        vector.Curr_value = output[currOutput];
+                        vector.setCurrent_value(output[currOutput]);
                         currOutput++;
                     }
                 }

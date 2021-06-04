@@ -56,6 +56,7 @@ namespace WPF_Main
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Обучающая выборка (*TXT)|*.TXT";
+            liveParams = new LiveParams();
             File_text.Foreground = Brushes.Black;
             if (openFileDialog.ShowDialog() == true)
             {

@@ -137,6 +137,8 @@ namespace WPF_Main.Components.Forms.LearningSet
             bool flag = learning_Sample.changeTargetItem((string)item.Content, 0);
             if (flag)            
                 drawVectors();
+            liveParams.Layers.First.Value.countOfNeurons = learning_Sample.count_of_inputVectors();
+            liveParams.Layers.Last.Value.countOfNeurons = learning_Sample.count_of_TargetVectors();
             Load_Target_RadioButton(learning_Sample.IsTarget.Find(new VectorsNames((string)item.Content)).Value.IsTarget);
 
         }
@@ -147,6 +149,9 @@ namespace WPF_Main.Components.Forms.LearningSet
             bool flag = learning_Sample.changeTargetItem((string)item.Content, 1);
             if (flag)
                 drawVectors();
+
+            liveParams.Layers.First.Value.countOfNeurons = learning_Sample.count_of_inputVectors();
+            liveParams.Layers.Last.Value.countOfNeurons = learning_Sample.count_of_TargetVectors();
             Load_Target_RadioButton(learning_Sample.IsTarget.Find(new VectorsNames((string)item.Content)).Value.IsTarget);
 
         }
@@ -157,6 +162,9 @@ namespace WPF_Main.Components.Forms.LearningSet
             bool flag = learning_Sample.changeTargetItem((string)item.Content, -1);
             if (flag)
                 drawVectors();
+
+            liveParams.Layers.First.Value.countOfNeurons = learning_Sample.count_of_inputVectors();
+            liveParams.Layers.Last.Value.countOfNeurons = learning_Sample.count_of_TargetVectors();
             Load_Target_RadioButton(learning_Sample.IsTarget.Find(new VectorsNames((string)item.Content)).Value.IsTarget);
         }
 

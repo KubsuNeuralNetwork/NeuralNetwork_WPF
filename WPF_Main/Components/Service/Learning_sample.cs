@@ -329,12 +329,14 @@ namespace WPF_Main.Components.Service
         private float min;
         private float max;
         private float curr_value;
+        private float norm_value;
 
         public VectorsNames(string name)
         {
             this.name = name;
             this.isTarget = 0;
             this.curr_value = 0;
+            this.norm_value = 0;
         }
 
         public new string ToString => (name + " " + isTarget);
@@ -344,6 +346,7 @@ namespace WPF_Main.Components.Service
         public float Min { get => min; set => min = value; }
         public float Max { get => max; set => max = value; }
         public float Curr_value { get => curr_value; set => curr_value = value; }
+        public float Norm_value { get => norm_value; set => norm_value = value; }
 
         public override bool Equals(object obj)
         {
@@ -371,6 +374,8 @@ namespace WPF_Main.Components.Service
             input.Text = Convert.ToString(curr_value);
             input.Width = 80;
             input.Margin = new Thickness(5, 0, 0, 0);
+            if (isTarget == 1)
+                input.IsReadOnly = true;
             stack.Children.Add(input);
 
             listBoxItem.Content = stack;
@@ -392,6 +397,15 @@ namespace WPF_Main.Components.Service
             {
                 this.curr_value = 10000f;
             }
+            if (isTarget == 0)
+                this.norm_value = (curr_value - min) / (max - min);
+        }
+
+        public void setCurrent_value(float norm)
+        {
+            norm_value = norm;
+            if (isTarget == 1)
+                this.curr_value = norm_value * (max - min) + min;
         }
 
         public override int GetHashCode()
