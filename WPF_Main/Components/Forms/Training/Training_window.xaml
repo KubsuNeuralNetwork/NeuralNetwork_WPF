@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0"
         xmlns:local="clr-namespace:WPF_Main.Components.Forms.Training"
         xmlns:wfi="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
         xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
@@ -15,21 +16,19 @@
         </Grid.ColumnDefinitions>
         <GroupBox x:Name="Learning_params_groupBox" Header="" HorizontalAlignment="Left" Height="329" Margin="10,10,0,0" VerticalAlignment="Top" Width="280" FontFamily="Times New Roman" FontSize="14" AutomationProperties.IsOffscreenBehavior="Offscreen" Panel.ZIndex="-10">
             <StackPanel x:Name="Params_of_learning" HorizontalAlignment="Left" Height="318" VerticalAlignment="Top" Width="270" Margin="0,-10,-2,-2.4">
-                <StackPanel x:Name="Params_learning_stackPanel" Height="108">
+                <StackPanel x:Name="Params_learning_stackPanel" Height="80">
                     <Label x:Name="Params_learning_label" Content="Параметры обучения" VerticalAlignment="Center" BorderBrush="Black" BorderThickness="0,0,0,1" Margin="10,0" Width="250" HorizontalContentAlignment="Center"/>
                     <StackPanel x:Name="TrainingSample_stackPanel" Height="26" Orientation="Horizontal">
-                        <Label x:Name="For_testing_label" Content="Для тестирования %
-"/>
+                        <Label x:Name="For_testing_label" Content="Для тестирования %"/>
                         <TextBox x:Name="ForTesting_textBox" TextWrapping="Wrap" Text="80" Width="80" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" PreviewTextInput="ForTesting_textBox_PreviewTextInput" TextChanged="ForTesting_textBox_TextChanged" Margin="50,0,0,0"/>
                     </StackPanel>
                     <StackPanel Height="26" Orientation="Horizontal">
                         <Label Content="Скорость обучения:"/>
                         <TextBox x:Name="learninTemp_textBox" TextWrapping="Wrap" Text="0,01" Width="80" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="57,0,0,0" TextChanged="learninTemp_textBox_TextChanged"/>
                     </StackPanel>
-                    <StackPanel Height="26" Orientation="Horizontal"/>
                 </StackPanel>
                 <StackPanel x:Name="Stop_stackPanel" Height="79">
-                    <Label x:Name="Stop_label" Content="Условия остановки" HorizontalContentAlignment="Center" BorderBrush="Black" BorderThickness="0,0,0,1" HorizontalAlignment="Center" Margin="10,0,10,2" Width="250"/>
+                    <Label x:Name="Stop_label" Content="Условия остановки" HorizontalContentAlignment="Center" BorderBrush="Black" BorderThickness="0,0,0,1" HorizontalAlignment="Center" Margin="10,0,10,0" Width="250"/>
                     <StackPanel x:Name="Epoch_stackPanel" Height="27" Orientation="Horizontal" VerticalAlignment="Center">
                         <CheckBox x:Name="Epoch_checkBox" Content="Эпохи:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,5,0" Checked="Epoch_checkBox_Checked" Unchecked="Epoch_checkBox_Unchecked"/>
                         <TextBox x:Name="Epoch_textBox" TextWrapping="Wrap" Text="10000" Width="66" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,5" HorizontalAlignment="Center" PreviewTextInput="Epoch_textBox_PreviewTextInput" IsEnabled="False" TextChanged="Epoch_textBox_TextChanged"/>
@@ -40,7 +39,12 @@
                     </StackPanel>
                 </StackPanel>
                 <Button x:Name="StartLearning_button" Content="Обучить" Height="30" Margin="0,3,0.4,5" Click="StartLearning_button_Click"/>
-                <Button x:Name="StopLearning_button"  Content="Остановить обучение" Height="33" Margin="0,0,0.4,0" Click="StopLearning_button_Click"/>
+                <Button x:Name="StopLearning_button"  Content="Остановить обучение" Height="33" Margin="0,0,0.4,10" Click="StopLearning_button_Click"/>
+                <Label x:Name="Graph_label" Content="Оторажение графика" HorizontalContentAlignment="Center" BorderBrush="Black" BorderThickness="0,0,0,1" HorizontalAlignment="Center" Margin="10,0,10,2" Width="250"/>
+                <StackPanel x:Name="graphFrequency" Height="26" Orientation="Horizontal">
+                    <Label x:Name="graphFrequency_label" Content="Частота отрисовки графика:"/>
+                    <TextBox x:Name="graphFrequency_textBox" TextWrapping="Wrap" Text="100" Width="80" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" PreviewTextInput="ForTesting_textBox_PreviewTextInput" TextChanged="ForTesting_textBox_TextChanged" Margin="10,0,0,0"/>
+                </StackPanel>
             </StackPanel>
         </GroupBox>
         <DockPanel Height="77" Margin="0,344.4,-4.4,-2.4" VerticalAlignment="Top" AutomationProperties.IsOffscreenBehavior="Offscreen" LastChildFill="False" FlowDirection="RightToLeft" Background="#B2F9F9F9" Grid.ColumnSpan="2">
@@ -55,21 +59,13 @@
                         <Label x:Name="CurrEpoch_label"  Content="Текущая эпоха:" Width="104"/>
                         <Label Name="CurrEpochNum_label" Width="60" />
                         <Label x:Name="CurrError_label" Content="Средняя ошибка на эпохе:" Width="170"/>
-                        <Label Name="CurrErrorNum_label" Width="60"/>
+                        <Label Name="CurrErrorNum_label" Width="92"/>
                     </StackPanel>
                 </ListBoxItem>
                 <ListBoxItem x:Name="GraphOfCoast_ListBoxItem" Height="270" HorizontalContentAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="450">
-                    <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <Polyline x:Name="Graph_Y"
-                                Points="10,-280 10,280"
-                                Stroke="Black"
-                                StrokeThickness="2" Width="53" Height="276" Canvas.Top="-135" />
-                        <Polyline x:Name="Graph" Stroke="Blue" Points="50,0 50,275 " Height="276" Canvas.Top="-135" Width="453"></Polyline>
-                        <Polyline x:Name="Graph_X"
-                                Points="0,10 500,10"
-                                Stroke="Black"
-                                StrokeThickness="2" Width="453" Height="21" Canvas.Top="125" />
-                    </Canvas>
+                    <d3:ChartPlotter Margin="0.1,0.1,0.1,0.1">
+                        <d3:LineGraph DataSource="{Binding Data}"></d3:LineGraph>
+                    </d3:ChartPlotter>
                 </ListBoxItem>
             </ListBox>
         </GroupBox>

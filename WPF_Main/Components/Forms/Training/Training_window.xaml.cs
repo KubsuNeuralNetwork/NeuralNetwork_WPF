@@ -22,17 +22,32 @@ using WPF_Main.Components.Forms.Testing;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Forms.DataVisualization.Charting;
+using Microsoft.Research.DynamicDataDisplay.DataSources;
 
 namespace WPF_Main.Components.Forms.Training
 {
+    public class MyViewModel
+    {
+        public ObservableDataSource<Point> Data { get; set; }
+
+        public MyViewModel()
+        {
+            Data = new ObservableDataSource<Point>();
+        }
+    }
     /// <summary>
     /// Логика взаимодействия для Training_window.xaml
     /// </summary>
     public partial class Training_window : Window
     {
+
+        MyViewModel viewModel;
+        // Параметры жизненого цикла
         private LiveParams liveParams;
 
+        // Обучающая выборка
         private Learning_sample learning_Sample;
+        // Нейронные сети к обучению
         private LinkedList<NeuralNetwork> nets;
 
         private int forTestingPercent;
@@ -62,6 +77,8 @@ namespace WPF_Main.Components.Forms.Training
         public Training_window()
         {
             InitializeComponent();
+            viewModel = new MyViewModel();
+            DataContext = viewModel;
             CompositionTarget.Rendering += CompositionTarget_Rendering;
         }
         private void Window_Activated(object sender, EventArgs e)
@@ -77,7 +94,7 @@ namespace WPF_Main.Components.Forms.Training
             nets = liveParams.Nets;
             currEpoch = liveParams.CurrEpoch;
             currCost = liveParams.CurrCost;
-
+            StopLearning_button.IsEnabled = false;
             ForTesting_textBox.Text = Convert.ToString(forTestingPercent);
             //CountOfNets_textBox.Text = Convert.ToString(countOfNets);
             learninTemp_textBox.Text = Convert.ToString(learningTemp);
@@ -275,7 +292,7 @@ namespace WPF_Main.Components.Forms.Training
             Cost_textBox.IsEnabled = false;
         }
 
-        private void Learn()
+        private void Learn()// функция обучения
         {
             for (int i = 0; i < countOfNets; i++)
             {
@@ -316,7 +333,7 @@ namespace WPF_Main.Components.Forms.Training
                         currMidleCoast = midleCoast / target.Length;
                     }
                 }
-                Thread.Sleep(1);
+                //Thread.Sleep(1);
                 currEpoch++;
             }         
             liveParams.CurrEpoch = currEpoch;
@@ -327,6 +344,10 @@ namespace WPF_Main.Components.Forms.Training
         {
             if (isTraining == false)
             {
+                Back_button.IsEnabled = false;
+                Next_button.IsEnabled = false;
+                StartLearning_button.IsEnabled = false;
+                StopLearning_button.IsEnabled = true;
                 isTraining = true;
                 activations = liveParams.getActivations();
                 layers = liveParams.getLayers();
@@ -342,6 +363,9 @@ namespace WPF_Main.Components.Forms.Training
             {
                 isTraining = false;
             });
+            Back_button.IsEnabled = true;
+            Next_button.IsEnabled = true;
+            StartLearning_button.IsEnabled = true;
         }
 
         private void Training_Window_ContentRendered(object sender, EventArgs e)
@@ -349,8 +373,23 @@ namespace WPF_Main.Components.Forms.Training
 
         }
 
+        // Функция вызова при перерендоре 
         private void CompositionTarget_Rendering(object sender, EventArgs e)
         {
+            int graphFrequency;
+            try
+            {
+                graphFrequency = Convert.ToInt32(graphFrequency_textBox.Text);
+            }
+            catch
+            {
+                graphFrequency = 1;
+                graphFrequency_textBox.Text = "1";
+            }
+            if (currEpoch % graphFrequency == 0)
+            {
+                viewModel.Data.Collection.Add(new Point(currEpoch, currMidleCoast));
+            }
             CurrEpochNum_label.Content = currEpoch;
             CurrErrorNum_label.Content = currMidleCoast;
         }
