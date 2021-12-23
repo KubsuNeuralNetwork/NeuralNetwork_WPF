@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_Main.Components.Forms.Training"
+        xmlns:wfi="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
+        xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
          mc:Ignorable="d"
         Title="Обучение" Height="450" Width="800" Activated="Window_Activated" FontFamily="Times New Roman" FontSize="14" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" ContentRendered="Training_Window_ContentRendered">
     <Grid>
@@ -21,13 +23,10 @@
                         <TextBox x:Name="ForTesting_textBox" TextWrapping="Wrap" Text="80" Width="80" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" PreviewTextInput="ForTesting_textBox_PreviewTextInput" TextChanged="ForTesting_textBox_TextChanged" Margin="50,0,0,0"/>
                     </StackPanel>
                     <StackPanel Height="26" Orientation="Horizontal">
-                        <Label Content="Кол-во эмулируемых НС:"/>
-                        <TextBox x:Name="CountOfNets_textBox" TextWrapping="Wrap" Text="1" Width="80" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="23,0,0,0" PreviewTextInput="CountOfNets_textBox_PreviewTextInput" TextChanged="CountOfNets_textBox_TextChanged"/>
-                    </StackPanel>
-                    <StackPanel Height="26" Orientation="Horizontal">
                         <Label Content="Скорость обучения:"/>
                         <TextBox x:Name="learninTemp_textBox" TextWrapping="Wrap" Text="0,01" Width="80" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="57,0,0,0" TextChanged="learninTemp_textBox_TextChanged"/>
                     </StackPanel>
+                    <StackPanel Height="26" Orientation="Horizontal"/>
                 </StackPanel>
                 <StackPanel x:Name="Stop_stackPanel" Height="79">
                     <Label x:Name="Stop_label" Content="Условия остановки" HorizontalContentAlignment="Center" BorderBrush="Black" BorderThickness="0,0,0,1" HorizontalAlignment="Center" Margin="10,0,10,2" Width="250"/>
@@ -56,10 +55,22 @@
                         <Label x:Name="CurrEpoch_label"  Content="Текущая эпоха:" Width="104"/>
                         <Label Name="CurrEpochNum_label" Width="60" />
                         <Label x:Name="CurrError_label" Content="Средняя ошибка на эпохе:" Width="170"/>
-                        <Label Name="CurrErrorNum_label" Width="60" />
+                        <Label Name="CurrErrorNum_label" Width="60"/>
                     </StackPanel>
                 </ListBoxItem>
-                
+                <ListBoxItem x:Name="GraphOfCoast_ListBoxItem" Height="270" HorizontalContentAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="450">
+                    <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Polyline x:Name="Graph_Y"
+                                Points="10,-280 10,280"
+                                Stroke="Black"
+                                StrokeThickness="2" Width="53" Height="276" Canvas.Top="-135" />
+                        <Polyline x:Name="Graph" Stroke="Blue" Points="50,0 50,275 " Height="276" Canvas.Top="-135" Width="453"></Polyline>
+                        <Polyline x:Name="Graph_X"
+                                Points="0,10 500,10"
+                                Stroke="Black"
+                                StrokeThickness="2" Width="453" Height="21" Canvas.Top="125" />
+                    </Canvas>
+                </ListBoxItem>
             </ListBox>
         </GroupBox>
 

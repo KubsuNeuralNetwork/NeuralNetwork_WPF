@@ -21,6 +21,7 @@ using WPF_Main.Components.Forms.LearningSet;
 using WPF_Main.Components.Forms.Testing;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace WPF_Main.Components.Forms.Training
 {
@@ -43,6 +44,7 @@ namespace WPF_Main.Components.Forms.Training
         private float cost;
         private int currEpoch;
         private float currCost;
+        private float currMidleCoast;
 
 
         private const int limitForTestingPercent = 100;
@@ -77,7 +79,7 @@ namespace WPF_Main.Components.Forms.Training
             currCost = liveParams.CurrCost;
 
             ForTesting_textBox.Text = Convert.ToString(forTestingPercent);
-            CountOfNets_textBox.Text = Convert.ToString(countOfNets);
+            //CountOfNets_textBox.Text = Convert.ToString(countOfNets);
             learninTemp_textBox.Text = Convert.ToString(learningTemp);
             Epoch_textBox.Text = Convert.ToString(epochCount);
             Cost_textBox.Text = Convert.ToString(cost);
@@ -97,6 +99,7 @@ namespace WPF_Main.Components.Forms.Training
         public bool IsEpoch { get => isEpoch; set => isEpoch = value; }
         public bool IsCost { get => isCost; set => isCost = value; }
         public LinkedList<NeuralNetwork> Nets { get => nets; set => nets = value; }
+        public float CurrMidleCoast { get => currMidleCoast; set => currMidleCoast = value; }
 
         private void Back_button_Click(object sender, RoutedEventArgs e)
         {
@@ -283,11 +286,18 @@ namespace WPF_Main.Components.Forms.Training
             int count_of_target = learning_Sample.count_of_TargetVectors();
             float[] input = new float[count_of_input];
             float[] target = new float[count_of_target];
-            while (isTraining || (isEpoch && currEpoch < epochCount))
+            bool flag = true;
+            while (isTraining && flag)
             {
-                foreach(NeuralNetwork net in nets)
+                if (isEpoch)
                 {
-                    for(int i = 0; i < learning_Sample.J_size; i++)
+                    flag = currEpoch < epochCount;
+                    if (!flag)
+                        break;
+                }
+                foreach (NeuralNetwork net in nets)
+                {
+                    for (int i = 0; i < learning_Sample.J_size; i++)
                     {
                         for (int j = 0; j < learning_Sample.I_size; j++)
                         {
@@ -297,10 +307,18 @@ namespace WPF_Main.Components.Forms.Training
                                 target[j - count_of_input] = norm[i, j];
                         }
                         net.BackPropagate(input, target);
+                        float[] result_target = net.FeedForward(input);
+                        float midleCoast = 0;
+                        for(int index = 0; index < target.Length; index++)
+                        {
+                            midleCoast += Math.Abs(target[index] - result_target[index]);
+                        }
+                        currMidleCoast = midleCoast / target.Length;
                     }
                 }
-                currEpoch++;                
-            }
+                Thread.Sleep(1);
+                currEpoch++;
+            }         
             liveParams.CurrEpoch = currEpoch;
             liveParams.Nets = nets;
         }
@@ -313,7 +331,7 @@ namespace WPF_Main.Components.Forms.Training
                 activations = liveParams.getActivations();
                 layers = liveParams.getLayers();
                 learning_Sample.Normalize();
-                countOfNets = Convert.ToInt32(CountOfNets_textBox.Text);
+                //countOfNets = Convert.ToInt32(CountOfNets_textBox.Text);
                 Task task = Task.Run(Learn);
             }
         }
@@ -334,6 +352,7 @@ namespace WPF_Main.Components.Forms.Training
         private void CompositionTarget_Rendering(object sender, EventArgs e)
         {
             CurrEpochNum_label.Content = currEpoch;
+            CurrErrorNum_label.Content = currMidleCoast;
         }
     }
 }
