@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using WPF_Main.Components.API;
 
 namespace WPF_Main.Components.Service
 {
     /*
         Класс отвечает за формирование обучающей выборки из txt файла.
      */
+    [Serializable]
     class Learning_sample
     {
         private Dictionary<string, LinkedList<float>> _learning_sampleMap;
@@ -16,6 +21,8 @@ namespace WPF_Main.Components.Service
         private string[] _columns_names;
         private string _learning_sample_str;
         private float[,] norm;
+        private int j_size;
+        private int i_size;
         public Learning_sample(string learning_sample_str)
         {
             isTarget = new LinkedList<VectorsNames>();
@@ -78,11 +85,12 @@ namespace WPF_Main.Components.Service
         {
         }
 
-
         public string Learning_sample_str { get => _learning_sample_str; set => _learning_sample_str = value; }
         public Dictionary<string, LinkedList<float>> Learning_sampleMap { get => _learning_sampleMap; }
         internal LinkedList<VectorsNames> IsTarget { get => isTarget; set => isTarget = value; }
         public float[,] Norm { get => norm; set => norm = value; }
+        public int I_size { get => j_size; set => j_size = value; }
+        public int J_size { get => i_size; set => i_size = value; }
 
         private string convert_mapToString()
         {
@@ -114,32 +122,91 @@ namespace WPF_Main.Components.Service
             return arr;
         }
 
+        public LinkedList<float> getListByKey(string key)
+        {
+            LinkedList<float> list;
+            _learning_sampleMap.TryGetValue(key, out list);
+            return list;
+        }
+
+        // Нормализовать все входные данные
         public void Normalize()
         {
             string[] str = _learning_sampleMap.Keys.ToArray();
             float max, min;
             LinkedList<float> list;
-            int i_size = str.Length, j_size;
+            j_size = str.Length;
             _learning_sampleMap.TryGetValue(str[0], out list);
-            j_size = list.Count;
-            norm = new float[i_size, j_size];
+            i_size = list.Count;
+            norm = new float[i_size, j_size];           
             for (int j = 0; j < j_size; j++)
             {
                 _learning_sampleMap.TryGetValue(str[j], out list);
-                float[] dop = list.ToArray<float>();
-                max = dop[0];
-                min = dop[0];
-                for (int i = 0; i < i_size; i++)
+                max = list.First.Value;
+                min = list.First.Value;
+                foreach (float num in list)
                 {
-                    if (dop[i] < min) min = dop[i];
-                    if (dop[i] > max) max = dop[i];
+                    if (num < min) min = num;
+                    if (num > max) max = num;
                 }
-                for (int i = 0; i < i_size; i++)
-                {
-                    norm[i, j] = (dop[i] - min) / (max - min);
-                }
+                if (min != max)
+                    foreach (float num in list)
+                    {
+                        list.Find(num).Value = (num - min) / (max - min);
+                    }
+                else if (min != 0)
+                    foreach (float num in list)
+                    {
+                        list.Find(num).Value = num / min;
+                    }
+                _learning_sampleMap.Remove(str[j]);
+                _learning_sampleMap.Add(str[j], list);
                 add_min_max(min, max, str[j]);
             }
+;
+            Console.WriteLine(convert_mapToString());
+            createNormMatrix();
+            for (int i = 0; i < i_size; i++)
+            {
+                for (int j = 0; j < j_size; j++)
+                {
+                    Console.Write(norm[i, j] + " ");
+                }
+                Console.Write("\n");
+            }
+        }
+
+        private void createNormMatrix()
+        {
+            int currColumn = 0;
+            foreach (KeyValuePair<string, LinkedList<float>> pair in _learning_sampleMap)
+            {
+                if (isTarget.Find(new VectorsNames(pair.Key)).Value.IsTarget == 0)
+                {
+                    int j = 0;
+                    foreach (float num in pair.Value)
+                    {
+                        norm[j, currColumn] = num;
+                        j++;
+                    }
+                    currColumn++;
+                }
+            }
+            foreach (KeyValuePair<string, LinkedList<float>> pair in _learning_sampleMap)
+            {
+                if (isTarget.Find(new VectorsNames(pair.Key)).Value.IsTarget == 1)
+                {
+                    int j = 0;
+                    foreach (float num in pair.Value)
+                    {
+                        norm[j, currColumn] = num;
+                        j++;
+                    }
+                    currColumn++;
+                }
+            }
+
+
         }
 
         public LinkedList<float> reverse_Normalize(LinkedList<float> list, float min, float max)
@@ -169,9 +236,51 @@ namespace WPF_Main.Components.Service
         {
             return isTarget.Find(new VectorsNames(name)).Value.IsTarget;
         }
-        public void changeTargetItem(string name, int target)
+        public bool changeTargetItem(string name, int target)
         {
+            int prevTarget = isTarget.Find(new VectorsNames(name)).Value.IsTarget;
+            if (target == prevTarget)
+                return false;
+            switch (target)
+            {
+                case 1:
+                    if (count_of_inputVectors() == 1 && prevTarget == 0)
+                        return false;
+                    break;
+                case 0:
+                    if (count_of_TargetVectors() == 1 && prevTarget == 1)
+                        return false;
+                    break;
+                case -1:
+                    if ((count_of_TargetVectors() - 1 < 1 && prevTarget == 1) || (count_of_inputVectors() - 1 < 1 && prevTarget == 0))
+                        return false;
+                    break;
+            }
             isTarget.Find(new VectorsNames(name)).Value.IsTarget = target;
+            VectorsNames vector = isTarget.Find(new VectorsNames(name)).Value;
+            VectorsNames firstTarget = null;
+            if (target == 1)
+            {
+                isTarget.Remove(new VectorsNames(name));
+                LinkedList<float> list;
+                _learning_sampleMap.TryGetValue(name, out list);                
+                isTarget.AddLast(vector);
+            }
+            if (target == 0)
+            {
+                foreach (VectorsNames item in isTarget)
+                {
+                    if (item.IsTarget == 1)
+                    {
+                        firstTarget = item;
+                        break;
+                    }
+                }
+                isTarget.Remove(new VectorsNames(name));
+                isTarget.AddBefore(isTarget.Find(firstTarget),vector);
+            }
+
+            return true;            
         }
 
         public int count_of_inputVectors()
@@ -204,8 +313,7 @@ namespace WPF_Main.Components.Service
             }
             return counter;
         }
-
-        public void add_min_max(float min, float max, string str)
+        private void add_min_max(float min, float max, string str)
         {
             VectorsNames vect = IsTarget.Find(new VectorsNames(str)).Value;
             vect.Min = min;
@@ -215,17 +323,22 @@ namespace WPF_Main.Components.Service
         #endregion
     }
 
+    [Serializable]
     class VectorsNames
     {
         private string name;
         private int isTarget;
         private float min;
         private float max;
+        private float curr_value;
+        private float norm_value;
 
         public VectorsNames(string name)
         {
             this.name = name;
             this.isTarget = 0;
+            this.curr_value = 0;
+            this.norm_value = 0;
         }
 
         public new string ToString => (name + " " + isTarget);
@@ -234,11 +347,97 @@ namespace WPF_Main.Components.Service
         public string Name { get => name; set => name = value; }
         public float Min { get => min; set => min = value; }
         public float Max { get => max; set => max = value; }
+        public float Curr_value { get => curr_value; set => curr_value = value; }
+        public float Norm_value { get => norm_value; set => norm_value = value; }
 
         public override bool Equals(object obj)
         {
             return obj is VectorsNames names &&
                    name == names.name;
+        }
+
+        public ListBoxItem getView()
+        {
+            ListBoxItem listBoxItem = new ListBoxItem();
+            listBoxItem.Height = 33;
+            StackPanel stack = new StackPanel();
+            stack.Orientation = Orientation.Horizontal;
+
+            Label column_name_Label = new Label();
+            column_name_Label.Content = name;
+            column_name_Label.MinWidth = 60;
+            column_name_Label.MaxWidth = 80;            
+            stack.Children.Add(column_name_Label);
+
+
+            TextBox input = new TextBox();
+            input.PreviewTextInput += Layer.InputDouble;
+            input.TextChanged += TextBox_TextChanged;
+            input.Text = Convert.ToString(curr_value);
+            input.Width = 80;
+            input.Margin = new Thickness(5, 0, 0, 0);
+            if (isTarget == 1)
+                input.IsReadOnly = true;
+            stack.Children.Add(input);
+
+            listBoxItem.Content = stack;
+
+            return listBoxItem;
+        }
+
+        public ListBoxItem getView(int tabIndex)
+        {
+            ListBoxItem listBoxItem = new ListBoxItem();
+            listBoxItem.Height = 33;
+            StackPanel stack = new StackPanel();
+            stack.Orientation = Orientation.Horizontal;
+
+            Label column_name_Label = new Label();
+            column_name_Label.Content = name;
+            column_name_Label.MinWidth = 60;
+            column_name_Label.MaxWidth = 80;
+            stack.Children.Add(column_name_Label);
+
+
+            TextBox input = new TextBox();
+            input.PreviewTextInput += Layer.InputDouble;
+            input.TextChanged += TextBox_TextChanged;
+            input.Text = Convert.ToString(curr_value);
+            input.Width = 80;
+            input.Margin = new Thickness(5, 0, 0, 0);
+            input.TabIndex = tabIndex;
+            if (isTarget == 1)
+                input.IsReadOnly = true;
+            stack.Children.Add(input);
+
+            listBoxItem.Content = stack;
+
+            return listBoxItem;
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                TextBox textBox = (TextBox)sender;
+                textBox.Text = textBox.Text.Replace(" ", string.Empty);
+                textBox.Text = Layer.limitDouble(textBox.Text, 100000f);
+                textBox.Text = Layer.deleteNotUsedNull(textBox.Text);
+                this.curr_value = float.Parse(textBox.Text);
+            }
+            catch (FormatException)
+            {
+                this.curr_value = 10000f;
+            }
+            if (isTarget == 0)
+                this.norm_value = (curr_value - min) / (max - min);
+        }
+
+        public void setCurrent_value(float norm)
+        {
+            norm_value = norm;
+            if (isTarget == 1)
+                this.curr_value = norm_value * (max - min) + min;
         }
 
         public override int GetHashCode()

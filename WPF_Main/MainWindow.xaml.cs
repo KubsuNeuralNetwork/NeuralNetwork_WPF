@@ -18,7 +18,7 @@ using WPF_Main.Components.Forms;
 using WPF_Main.Components.Forms.LearningSet;
 using WPF_Main.Components.Service;
 using WPF_Main.Components;
-
+using WPF_Main.Components.Forms.Testing;
 
 namespace WPF_Main
 {
@@ -56,10 +56,10 @@ namespace WPF_Main
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Обучающая выборка (*TXT)|*.TXT";
+            liveParams = new LiveParams();
             File_text.Foreground = Brushes.Black;
             if (openFileDialog.ShowDialog() == true)
             {
-
                 if (isErrorOpenFile == true)
                 {
                     File_text.Foreground = Brushes.Black;
@@ -115,5 +115,27 @@ namespace WPF_Main
             about.ShowDialog();
         }
 
+        private void LoadNN_button_click(object sender, RoutedEventArgs e)
+        {
+
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Состояние программы (*.*)|*.*";
+            liveParams = new LiveParams();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                if (isErrorOpenFile == true)
+                {
+                    File_text.Foreground = Brushes.Black;
+                }
+                path = openFileDialog.FileName;
+                liveParams = LiveParams.ReadFromBinaryFile<LiveParams>(path);
+            }
+
+            Testing_window newWindow = new Testing_window();
+            newWindow.LiveParams = liveParams;
+            newWindow.Show();
+            newWindow.Back_button.IsEnabled = false;
+            this.Close();
+        }
     }
 }

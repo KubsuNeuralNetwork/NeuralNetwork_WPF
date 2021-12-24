@@ -3,12 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0"
         xmlns:local="clr-namespace:WPF_Main.Components.Forms"
         mc:Ignorable="d"
-        Title="About" Height="450" Width="800">
+        Title="About" Height="447.951" Width="800" Loaded="Window_Loaded_1">
     <Grid>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="216,136,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-        <TextBox x:Name="About_textBox" HorizontalAlignment="Left" Height="162" Margin="346,122,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="327"/>
-
+        <Button Content="Button" HorizontalAlignment="Left" Margin="365,21,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <TextBox x:Name="About_textBox" HorizontalAlignment="Left" Height="162" Margin="458,22,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="327"/>
+        <d3:ChartPlotter Margin="0,0,-0.444,48.889">
+            <d3:LineGraph DataSource="{Binding Data}"></d3:LineGraph>
+        </d3:ChartPlotter>
+        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="365,391,0,0" VerticalAlignment="Top" Width="75" Click="button_Click_1"/>
     </Grid>
 </Window>

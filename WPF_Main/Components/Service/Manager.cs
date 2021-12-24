@@ -2,6 +2,7 @@
 using System;
 
 
+// Пример работы с Многойслойным перцептроном
 public class Manager
 {
     static NeuralNetwork net;
@@ -18,7 +19,6 @@ public class Manager
             net.BackPropagate(new float[] { 1f, 0f }, new float[] { 1f, 1f });
             net.BackPropagate(new float[] { 0f, 1f }, new float[] { 1f, 1f });
             net.BackPropagate(new float[] { 0.3f, 0.2f }, new float[] { 0.5f, 0.5f });
-
         }
         //net.Load("./MLP.txt");
 
@@ -31,15 +31,5 @@ public class Manager
         str += Convert.ToString(net.FeedForward(new float[] { 1f, 0f })[0]) + "\n";
         net.Save("./MLP.txt");
         return str;
-
-        //We want the gate to simulate 3 input or gate (A or B or C)
-        // 0 0 0    => 0
-        // 1 0 0    => 1
-        // 0 1 0    => 1
-        // 0 0 1    => 1
-        // 1 1 0    => 1
-        // 0 1 1    => 1
-        // 1 0 1    => 1
-        // 1 1 1    => 1
     }
 }
