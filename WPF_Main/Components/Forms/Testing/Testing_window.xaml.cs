@@ -15,6 +15,8 @@ using WPF_Main.Components.Service;
 using WPF_Main.Components.API;
 using WPF_Main.Components.Forms;
 using WPF_Main.Components.Forms.Training;
+using System.IO;
+using System.Windows.Forms;
 
 namespace WPF_Main.Components.Forms.Testing
 {
@@ -57,12 +59,13 @@ namespace WPF_Main.Components.Forms.Testing
         {
             Input_Layers_ListBox.Items.Clear();
             Target_Layers_ListBox.Items.Clear();
+            int i = 1;
             foreach (VectorsNames vector in learning_Sample.IsTarget)
             {
                 if (vector.IsTarget == 0)
-                    Input_Layers_ListBox.Items.Add(vector.getView());
+                    Input_Layers_ListBox.Items.Add(vector.getView(i++));
                 if (vector.IsTarget == 1)
-                    Target_Layers_ListBox.Items.Add(vector.getView());
+                    Target_Layers_ListBox.Items.Add(vector.getView(i++));
             }
         }
 
@@ -106,9 +109,19 @@ namespace WPF_Main.Components.Forms.Testing
             drawValues();
         }
 
-        private void About_button_Click(object sender, RoutedEventArgs e)
+        private void SaveNN_button_Click(object sender, RoutedEventArgs e)
         {
 
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+
+            saveFileDialog1.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            saveFileDialog1.FilterIndex = 2;
+            saveFileDialog1.RestoreDirectory = true;
+            saveFileDialog1.ShowDialog();
+            if (saveFileDialog1.FileName != "")
+            {
+                LiveParams.WriteToBinaryFile<LiveParams>(saveFileDialog1.FileName, liveParams);
+            }
         }
     }
 }

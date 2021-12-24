@@ -13,6 +13,7 @@ namespace WPF_Main.Components.Service
     /*
         Класс отвечает за формирование обучающей выборки из txt файла.
      */
+    [Serializable]
     class Learning_sample
     {
         private Dictionary<string, LinkedList<float>> _learning_sampleMap;
@@ -322,6 +323,7 @@ namespace WPF_Main.Components.Service
         #endregion
     }
 
+    [Serializable]
     class VectorsNames
     {
         private string name;
@@ -374,6 +376,36 @@ namespace WPF_Main.Components.Service
             input.Text = Convert.ToString(curr_value);
             input.Width = 80;
             input.Margin = new Thickness(5, 0, 0, 0);
+            if (isTarget == 1)
+                input.IsReadOnly = true;
+            stack.Children.Add(input);
+
+            listBoxItem.Content = stack;
+
+            return listBoxItem;
+        }
+
+        public ListBoxItem getView(int tabIndex)
+        {
+            ListBoxItem listBoxItem = new ListBoxItem();
+            listBoxItem.Height = 33;
+            StackPanel stack = new StackPanel();
+            stack.Orientation = Orientation.Horizontal;
+
+            Label column_name_Label = new Label();
+            column_name_Label.Content = name;
+            column_name_Label.MinWidth = 60;
+            column_name_Label.MaxWidth = 80;
+            stack.Children.Add(column_name_Label);
+
+
+            TextBox input = new TextBox();
+            input.PreviewTextInput += Layer.InputDouble;
+            input.TextChanged += TextBox_TextChanged;
+            input.Text = Convert.ToString(curr_value);
+            input.Width = 80;
+            input.Margin = new Thickness(5, 0, 0, 0);
+            input.TabIndex = tabIndex;
             if (isTarget == 1)
                 input.IsReadOnly = true;
             stack.Children.Add(input);

@@ -2,6 +2,7 @@
 using System;
 
 
+// Пример работы с Многойслойным перцептроном
 public class Manager
 {
     static NeuralNetwork net;

@@ -198,7 +198,7 @@ namespace WPF_Main.Components.Forms.Training
                 TextBox textBox = (TextBox)sender;
                 textBox.Text = textBox.Text.Replace(" ", string.Empty);
                 textBox.Text = Layer.limitDouble(textBox.Text, limitLearningTemp);
-                textBox.Text = Layer.deleteNotUsedNull(textBox.Text);
+                textBox.Text = Layer.deleteNotUsedNull(textBox.Text, false);
                 learningTemp = float.Parse(textBox.Text);
             }
             catch (FormatException)
@@ -230,7 +230,7 @@ namespace WPF_Main.Components.Forms.Training
                 TextBox textBox = (TextBox)sender;
                 textBox.Text = textBox.Text.Replace(" ", string.Empty);
                 textBox.Text = Layer.limitDouble(textBox.Text, limitCost);
-                textBox.Text = Layer.deleteNotUsedNull(textBox.Text);
+                textBox.Text = Layer.deleteNotUsedNull(textBox.Text, false);
                 cost = float.Parse(textBox.Text);
             }
             catch (FormatException)
@@ -312,6 +312,12 @@ namespace WPF_Main.Components.Forms.Training
                     if (!flag)
                         break;
                 }
+                if (isCost)
+                {
+                    flag = currMidleCoast > cost;
+                    if (!flag)
+                        break;
+                }
                 foreach (NeuralNetwork net in nets)
                 {
                     for (int i = 0; i < learning_Sample.J_size; i++)
@@ -333,7 +339,7 @@ namespace WPF_Main.Components.Forms.Training
                         currMidleCoast = midleCoast / target.Length;
                     }
                 }
-                //Thread.Sleep(1);
+                Thread.Sleep(1);
                 currEpoch++;
             }         
             liveParams.CurrEpoch = currEpoch;
@@ -348,6 +354,9 @@ namespace WPF_Main.Components.Forms.Training
                 Next_button.IsEnabled = false;
                 StartLearning_button.IsEnabled = false;
                 StopLearning_button.IsEnabled = true;
+                ForTesting_textBox.IsEnabled = false;
+                learninTemp_textBox.IsEnabled = false;
+                About_button.IsEnabled = false;
                 isTraining = true;
                 activations = liveParams.getActivations();
                 layers = liveParams.getLayers();
@@ -366,6 +375,10 @@ namespace WPF_Main.Components.Forms.Training
             Back_button.IsEnabled = true;
             Next_button.IsEnabled = true;
             StartLearning_button.IsEnabled = true;
+            StopLearning_button.IsEnabled = false;
+            ForTesting_textBox.IsEnabled = true;
+            learninTemp_textBox.IsEnabled = true;
+            About_button.IsEnabled = true;
         }
 
         private void Training_Window_ContentRendered(object sender, EventArgs e)

@@ -49,7 +49,6 @@
         </GroupBox>
         <DockPanel Height="77" Margin="0,344.4,-4.4,-2.4" VerticalAlignment="Top" AutomationProperties.IsOffscreenBehavior="Offscreen" LastChildFill="False" FlowDirection="RightToLeft" Background="#B2F9F9F9" Grid.ColumnSpan="2">
             <Button x:Name="Next_button" Content="Далее" Height="34" VerticalAlignment="Center" Width="112" Margin="68,16,0,18" HorizontalAlignment="Center" FontFamily="Times New Roman" FontSize="16" Click="Next_button_Click"/>
-            <Button x:Name="About_button" Content="Об обучении" Height="34" VerticalAlignment="Center" Width="150" Margin="64,20,15,23" HorizontalAlignment="Center" DockPanel.Dock="Right" FontFamily="Times New Roman" FontSize="16" Click="About_button_Click"/>
             <Button x:Name="Back_button" Content="Назад" Height="34" VerticalAlignment="Center" Width="112" Margin="37,20.5,0,22.5" HorizontalAlignment="Center" FontFamily="Times New Roman" FontSize="16" Click="Back_button_Click" />
         </DockPanel>
         <GroupBox x:Name="Learning_nets_groupBox" Grid.Column="1" Header="Обучение" HorizontalAlignment="Left" Height="329" Margin="10.2,10,0,0" VerticalAlignment="Top" Width="473" FontFamily="Times New Roman" FontSize="14" Panel.ZIndex="-10">

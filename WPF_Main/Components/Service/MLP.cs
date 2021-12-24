@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Linq;
 
+[Serializable]
 public class NeuralNetwork
 {
     //Фундаментальные параметры 

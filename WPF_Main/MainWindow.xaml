@@ -54,9 +54,8 @@
         </Grid>
         <Label Content="Нейросети  являются программами, работающими по самообучающи-&#xD;&#xA;мся алгоритмам, поэтому перед использованием их необходимо пред-&#xD;&#xA;варительно обучить. Обучение производится на основании  специаль-&#xD;&#xA;ного набора данных - обучающей  выборки.  Для  обучения  нейросети &#xD;&#xA;необходимо подавать на ее вход данные, для которых заранее опреде-&#xD;&#xA;лены выходные значения. Эти данные находятся в  текстовом  файле &#xD;&#xA;специального вида&#xD;&#xA;" Margin="142,172,143,0" VerticalAlignment="Top"/>
         <DockPanel Height="77" Margin="0,0.25,0,0" VerticalAlignment="Top" AutomationProperties.IsOffscreenBehavior="Offscreen" LastChildFill="False" FlowDirection="RightToLeft" Background="#B2F9F9F9" Grid.Row="1">
-            <Button x:Name="Exit_button" Content="Выход" Height="34" VerticalAlignment="Center" Width="112" Margin="28,16,0,18" HorizontalAlignment="Center" FontFamily="Times New Roman" FontSize="16" Click="Exit_button_Click"/>
             <Button x:Name="Next_button" Content="Далее" Height="34" VerticalAlignment="Center" Width="112" Margin="68,16,0,18" HorizontalAlignment="Center" FontFamily="Times New Roman" FontSize="16" Click="Next_button_Click"/>
-            <Button x:Name="About_button" Content="О программе" Height="34" VerticalAlignment="Center" Width="112" Margin="64,16,15,18" HorizontalAlignment="Center" DockPanel.Dock="Right" FontFamily="Times New Roman" FontSize="16" Click="About_button_Click"/>
+            <Button x:Name="LoadNN_button" Content="Загрузить НС" Height="34" VerticalAlignment="Center" Width="112" Margin="64,16,15,18" HorizontalAlignment="Center" DockPanel.Dock="Right" FontFamily="Times New Roman" FontSize="16" Click="LoadNN_button_click"/>
         </DockPanel>
 
     </Grid>

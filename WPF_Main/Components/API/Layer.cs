@@ -11,7 +11,7 @@ using System.Windows.Media;
 
 namespace WPF_Main.Components.API
 {
-
+    [Serializable]
     public class Layer
     {
         public ActivationFunctions function;
@@ -243,11 +243,14 @@ namespace WPF_Main.Components.API
                 {
                     str = str.Remove(0, 1);
                 }
-            } else
-            {
+            } else {
                 while (str.Length >= 2 && str[1] == '0')
                 {
                     str = str.Remove(0, 1);
+                }
+                if (str.Equals("0"))
+                {
+                    str = str + ",";
                 }
             }
 
