@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using WPF_Main.Components.Service;
 using WPF_Main.Components.API;
 using System.IO;
+using System.Windows;
 
 namespace WPF_Main.Components
 {
@@ -31,6 +32,8 @@ namespace WPF_Main.Components
         private bool isCost;
         private int currEpoch;
         private float currCost;
+
+        private ICollection<Point> points;
         public LiveParams()
         {
             path = null;
@@ -91,6 +94,7 @@ namespace WPF_Main.Components
         public int CurrEpoch { get => currEpoch; set => currEpoch = value; }
         public float CurrCost { get => currCost; set => currCost = value; }
         internal Learning_sample Learning_Sample { get => learning_Sample; set => learning_Sample = value; }
+        public ICollection<Point> Points { get => points; set => points = value; }
 
         public string[] getActivationsArray()
         {

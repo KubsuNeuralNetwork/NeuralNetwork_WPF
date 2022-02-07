@@ -422,7 +422,7 @@ namespace WPF_Main.Components.Service
                 TextBox textBox = (TextBox)sender;
                 textBox.Text = textBox.Text.Replace(" ", string.Empty);
                 textBox.Text = Layer.limitDouble(textBox.Text, 100000f);
-                textBox.Text = Layer.deleteNotUsedNull(textBox.Text);
+                textBox.Text = Layer.deleteNotUsedNull(textBox.Text, false);
                 this.curr_value = float.Parse(textBox.Text);
             }
             catch (FormatException)

@@ -60,6 +60,8 @@ namespace WPF_Main.Components.Forms.Training
         private int currEpoch;
         private float currCost;
         private float currMidleCoast;
+        private ICollection<Point> points;
+
 
 
         private const int limitForTestingPercent = 100;
@@ -94,6 +96,7 @@ namespace WPF_Main.Components.Forms.Training
             nets = liveParams.Nets;
             currEpoch = liveParams.CurrEpoch;
             currCost = liveParams.CurrCost;
+            points = liveParams.Points;
             StopLearning_button.IsEnabled = false;
             ForTesting_textBox.Text = Convert.ToString(forTestingPercent);
             //CountOfNets_textBox.Text = Convert.ToString(countOfNets);
@@ -104,6 +107,13 @@ namespace WPF_Main.Components.Forms.Training
             CurrEpochNum_label.Content = Convert.ToString(currEpoch);
             Epoch_checkBox.IsChecked = isEpoch;
             Cost_checkBox.IsChecked = isCost;
+            if (points != null)
+            {
+                foreach(Point point in points)
+                {
+                    viewModel.Data.Collection.Add(new Point(point.X, point.Y));
+                }
+            }
         }
 
         internal Learning_sample Learning_Sample { get => learning_Sample; set => learning_Sample = value; }
@@ -117,6 +127,7 @@ namespace WPF_Main.Components.Forms.Training
         public bool IsCost { get => isCost; set => isCost = value; }
         public LinkedList<NeuralNetwork> Nets { get => nets; set => nets = value; }
         public float CurrMidleCoast { get => currMidleCoast; set => currMidleCoast = value; }
+        public ICollection<Point> Points { get => points; set => points = value; }
 
         private void Back_button_Click(object sender, RoutedEventArgs e)
         {
@@ -130,7 +141,8 @@ namespace WPF_Main.Components.Forms.Training
             liveParams.IsEpoch = isEpoch;
             liveParams.Nets = nets;
             liveParams.CurrEpoch = currEpoch;
-            liveParams.CurrCost = currCost;
+            liveParams.CurrCost = currMidleCoast;
+            liveParams.Points = viewModel.Data.Collection;
             mainWindow.LiveParams = liveParams;
             mainWindow.Show();
             this.Close();
@@ -148,7 +160,8 @@ namespace WPF_Main.Components.Forms.Training
             liveParams.IsEpoch = isEpoch;
             liveParams.Nets = nets;
             liveParams.CurrEpoch = currEpoch;
-            liveParams.CurrCost = currCost;
+            liveParams.CurrCost = currMidleCoast;
+            liveParams.Points = viewModel.Data.Collection;
             newWindow.LiveParams = liveParams;
             newWindow.Show();
             this.Close();
@@ -294,10 +307,7 @@ namespace WPF_Main.Components.Forms.Training
 
         private void Learn()// функция обучения
         {
-            for (int i = 0; i < countOfNets; i++)
-            {
-                nets.AddLast(new NeuralNetwork(layers, activations));
-            }
+
             float[,] norm = learning_Sample.Norm;
             int count_of_input = learning_Sample.count_of_inputVectors();
             int count_of_target = learning_Sample.count_of_TargetVectors();
@@ -356,12 +366,18 @@ namespace WPF_Main.Components.Forms.Training
                 StopLearning_button.IsEnabled = true;
                 ForTesting_textBox.IsEnabled = false;
                 learninTemp_textBox.IsEnabled = false;
-                About_button.IsEnabled = false;
                 isTraining = true;
                 activations = liveParams.getActivations();
                 layers = liveParams.getLayers();
                 learning_Sample.Normalize();
                 //countOfNets = Convert.ToInt32(CountOfNets_textBox.Text);
+                if (nets.Count == 0)
+                {
+                    for (int i = 0; i < countOfNets; i++)
+                    {
+                        nets.AddLast(new NeuralNetwork(layers, activations));
+                    }
+                }
                 Task task = Task.Run(Learn);
             }
         }
@@ -378,7 +394,6 @@ namespace WPF_Main.Components.Forms.Training
             StopLearning_button.IsEnabled = false;
             ForTesting_textBox.IsEnabled = true;
             learninTemp_textBox.IsEnabled = true;
-            About_button.IsEnabled = true;
         }
 
         private void Training_Window_ContentRendered(object sender, EventArgs e)
@@ -399,7 +414,7 @@ namespace WPF_Main.Components.Forms.Training
                 graphFrequency = 1;
                 graphFrequency_textBox.Text = "1";
             }
-            if (currEpoch % graphFrequency == 0)
+            if (currEpoch % graphFrequency == 0 && currEpoch != 0)
             {
                 viewModel.Data.Collection.Add(new Point(currEpoch, currMidleCoast));
             }
